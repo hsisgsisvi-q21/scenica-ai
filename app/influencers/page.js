@@ -4,29 +4,15 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 const YT = (id) => `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
-const T = [
-  { id:'YFU4erbddog', n:'뷰티 리뷰', c:'beauty', d:'30s', desc:'코스메틱 언박싱 + 사용 후기' },
-  { id:'LygFajnhLFY', n:'패션 룩북', c:'fashion', d:'45s', desc:'시즌별 스타일링 숏폼' },
-  { id:'rxWNmzQpW2c', n:'라이프 브이로그', c:'lifestyle', d:'60s', desc:'일상 속 자연스러운 노출' },
-  { id:'RPmqjTwdVP8', n:'상품 쇼케이스', c:'commerce', d:'15s', desc:'디테일 클로즈업 시네마틱' },
-  { id:'YFU4erbddog', n:'브랜드 캠페인', c:'brand', d:'30s', desc:'브랜드 감성 숏폼 광고' },
-  { id:'VU52Kx2AXL8', n:'시네마틱 무드', c:'cinematic', d:'45s', desc:'영화 같은 브랜드 필름' },
-  { id:'wMdSqpTGxJo', n:'드리미 비주얼', c:'cinematic', d:'45s', desc:'몽환적 시네마틱 비주얼' },
-  { id:'LygFajnhLFY', n:'스트릿 스냅', c:'fashion', d:'15s', desc:'거리 촬영 숏폼' },
-  { id:'rxWNmzQpW2c', n:'카페 브이로그', c:'lifestyle', d:'60s', desc:'카페 제품 사용 일상' },
-  { id:'RPmqjTwdVP8', n:'언박싱 하울', c:'commerce', d:'30s', desc:'다수 제품 동시 언박싱' },
-  { id:'YFU4erbddog', n:'프로모션 릴스', c:'commerce', d:'15s', desc:'할인·이벤트 고지' },
-  { id:'VU52Kx2AXL8', n:'나이트 무드', c:'cinematic', d:'30s', desc:'밤 분위기 시네마틱' },
+const DATA = [
+  { name:'YUNA', cat:'Beauty', f:'12.4만', eng:'4.2%', vids:['YFU4erbddog','wMdSqpTGxJo','VU52Kx2AXL8'], desc:'자연스러운 리뷰와 감성적인 룩북으로 팔로워와 소통합니다.' },
+  { name:'MISO', cat:'Fashion', f:'8.7만', eng:'3.8%', vids:['LygFajnhLFY','YFU4erbddog','RPmqjTwdVP8'], desc:'스트릿부터 하이엔드까지. 트렌디한 스타일링 콘텐츠를 제작합니다.' },
+  { name:'HANA', cat:'Lifestyle', f:'11.2만', eng:'4.5%', vids:['rxWNmzQpW2c','LygFajnhLFY','LygFajnhLFY'], desc:'데일리 라이프스타일, 카페 브이로그, 인테리어까지.' },
+  { name:'RINA', cat:'Food & Living', f:'9.8만', eng:'3.9%', vids:['RPmqjTwdVP8','rxWNmzQpW2c','VU52Kx2AXL8'], desc:'푸드 리뷰, 홈쿠킹, 리빙 소품. 따뜻한 톤으로 구매 전환을 이끕니다.' },
 ];
 
-const CATS = [
-  { k:'all',l:'All' },{ k:'beauty',l:'Beauty' },{ k:'fashion',l:'Fashion' },
-  { k:'lifestyle',l:'Lifestyle' },{ k:'commerce',l:'Commerce' },{ k:'cinematic',l:'Cinematic' },{ k:'brand',l:'Brand' },
-];
-
-export default function TemplatesPage() {
-  const [cat, setCat] = useState('all');
-
+export default function InfluencersPage() {
+  const [sel, setSel] = useState(null);
   useEffect(() => {
     const els = document.querySelectorAll('[data-aos]');
     const obs = new IntersectionObserver((entries) => { entries.forEach((e) => { if (e.isIntersecting) { e.target.style.transitionDuration = '900ms'; setTimeout(() => e.target.classList.add('aos-animate'), Number(e.target.dataset.aosDelay || 0)); }}); }, { threshold: 0.06 });
@@ -34,56 +20,57 @@ export default function TemplatesPage() {
     return () => obs.disconnect();
   }, []);
 
-  const items = cat === 'all' ? T : T.filter((t) => t.c === cat);
-
   return (
     <div className="min-h-screen">
       <div className="page-container py-20 md:py-28 text-center">
-        <span className="sans text-[9px] text-white/[.08] uppercase tracking-[.2em]" data-aos="fade-up">Templates</span>
-        <h1 className="serif text-[28px] md:text-[46px] font-light text-white mt-5" style={{ letterSpacing: '-0.03em' }} data-aos="fade-up" data-aos-delay="80">콘텐츠 템플릿</h1>
-        <p className="text-white/[.12] text-[12px] font-light mt-5 max-w-sm mx-auto leading-[1.9]" data-aos="fade-up" data-aos-delay="140">
-          검증된 템플릿으로 바로 시작하세요. AI가 상품에 맞게 커스터마이즈합니다.
+        <span className="sans text-[9px] text-white/[.08] uppercase tracking-[.2em]" data-aos="fade-up">AI Influencers</span>
+        <h1 className="serif text-[28px] md:text-[46px] font-light text-white mt-5 leading-[1.1]" style={{ letterSpacing: '-0.03em' }} data-aos="fade-up" data-aos-delay="80" data-aos-duration="1100">
+          팔로워 40만+<br />AI 인플루언서
+        </h1>
+        <p className="text-white/[.15] text-[12px] font-light mt-5 max-w-sm mx-auto leading-[1.9]" data-aos="fade-up" data-aos-delay="160">
+          각 카테고리에 특화된 AI 인플루언서가 당신의 상품을 직접 홍보합니다
         </p>
       </div>
       <div className="sep" />
-
-      <div className="page-container py-14">
-        <div className="tab-bar mb-10" data-aos="fade-up">
-          {CATS.map((c) => (
-            <button key={c.k} onClick={() => setCat(c.k)} className={`tab-item ${cat === c.k ? 'active' : ''}`}>{c.l}</button>
-          ))}
-        </div>
-
-        <div className="vid-grid">
-          {items.map((t, i) => (
-            <Link href="/create" key={`${t.id}-${i}`} data-aos="fade-up" data-aos-delay={Math.min(i * 50, 300)}>
-              <div className="tmpl-card group">
-                <div className="aspect-video relative overflow-hidden">
-                  <img src={YT(t.id)} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-900 pointer-events-none" loading="lazy" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="absolute top-3 right-3 px-2 py-0.5 rounded bg-black/40 backdrop-blur-sm">
-                    <span className="sans text-[9px] text-white/50">{t.d}</span>
+      <div className="page-container py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {DATA.map((inf, i) => (
+            <div key={inf.name} className="inf-profile cursor-pointer" data-aos="fade-up" data-aos-delay={i * 80} onClick={() => setSel(sel === inf.name ? null : inf.name)}>
+              <div className="aspect-[16/9] relative overflow-hidden">
+                <img src={YT(inf.vids[0])} alt="" className="w-full h-full object-cover" style={{ objectPosition: '50% 20%' }} />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 flex items-end justify-between">
+                  <div>
+                    <div className="sans text-[8px] text-white/20 uppercase tracking-[.2em] mb-1.5">{inf.cat}</div>
+                    <div className="text-white/80 text-[18px] font-medium sans tracking-[.03em]">{inf.name}</div>
                   </div>
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-400">
-                    <div className="px-4 py-1.5 rounded-full bg-white text-black text-[9px] sans font-semibold tracking-[.1em] uppercase shadow-lg">Use Template</div>
+                  <div className="flex gap-6 text-right">
+                    <div><div className="serif text-white/40 text-[16px] font-light">{inf.f}</div><div className="text-white/[.08] text-[8px] sans uppercase tracking-[.15em]">Followers</div></div>
+                    <div><div className="serif text-white/40 text-[16px] font-light">{inf.eng}</div><div className="text-white/[.08] text-[8px] sans uppercase tracking-[.15em]">Engagement</div></div>
                   </div>
-                </div>
-                <div className="p-4">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-white/50 text-[12px] font-medium">{t.n}</span>
-                    <span className="sans text-[8px] text-white/[.1] uppercase tracking-[.15em]">{t.c}</span>
-                  </div>
-                  <p className="text-white/[.1] text-[10px] font-light">{t.desc}</p>
                 </div>
               </div>
-            </Link>
+              {sel === inf.name && (
+                <div className="p-5 md:p-6 border-t border-white/[.03]">
+                  <p className="text-white/[.18] text-[12px] font-light leading-[1.9] mb-5">{inf.desc}</p>
+                  <div className="sans text-[8px] text-white/[.08] uppercase tracking-[.2em] mb-3">Recent</div>
+                  <div className="grid grid-cols-3 gap-1.5">
+                    {inf.vids.map((v, j) => (
+                      <div key={j} className="aspect-video rounded overflow-hidden"><img src={YT(v)} alt="" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 pointer-events-none" /></div>
+                    ))}
+                  </div>
+                  <div className="mt-5"><Link href="/create" className="btn-w text-[10px]">이 인플루언서로 제작</Link></div>
+                </div>
+              )}
+            </div>
           ))}
         </div>
-
-        <div className="text-center mt-16" data-aos="fade-up">
-          <p className="text-white/[.06] text-[11px] mb-4">원하는 템플릿이 없나요?</p>
-          <Link href="/create" className="btn-w">커스텀으로 시작</Link>
-        </div>
+      </div>
+      <div className="sep" />
+      <div className="page-container py-24 text-center" data-aos="fade-up">
+        <h2 className="serif text-[22px] md:text-[30px] font-light text-white mb-4">AI 인플루언서와 시작하세요</h2>
+        <p className="text-white/[.1] text-[12px] mb-8">상품만 등록하면 나머지는 AI가 전부 해결합니다</p>
+        <Link href="/create" className="btn-w">시작하기</Link>
       </div>
     </div>
   );
