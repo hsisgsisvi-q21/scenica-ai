@@ -156,27 +156,50 @@ export default function Home() {
 
   const hero = VIDEOS[1]; // Night City Mood
 
-  // Different frame cuts from YouTube (25%, 50%, 75% of video)
-  const HERO_IMG = `https://img.youtube.com/vi/ttR0eoHz9Bg/maxres2.jpg`;
-  const HERO_FALLBACK = `https://img.youtube.com/vi/ttR0eoHz9Bg/maxresdefault.jpg`;
+  // Multiple frame cuts from different videos (default, 25%, 50%, 75% timestamps)
+  const HERO_FRAMES = [
+    { src: `https://img.youtube.com/vi/YFU4erbddog/maxres1.jpg`, pos: '50% 20%' },
+    { src: `https://img.youtube.com/vi/ttR0eoHz9Bg/maxresdefault.jpg`, pos: '50% 30%' },
+    { src: `https://img.youtube.com/vi/VU52Kx2AXL8/maxres2.jpg`, pos: '50% 25%' },
+    { src: `https://img.youtube.com/vi/LygFajnhLFY/maxres1.jpg`, pos: '50% 20%' },
+    { src: `https://img.youtube.com/vi/YFU4erbddog/maxres3.jpg`, pos: '50% 25%' },
+    { src: `https://img.youtube.com/vi/rxWNmzQpW2c/maxres2.jpg`, pos: '50% 30%' },
+    { src: `https://img.youtube.com/vi/ttR0eoHz9Bg/maxres1.jpg`, pos: '50% 25%' },
+    { src: `https://img.youtube.com/vi/RPmqjTwdVP8/maxres2.jpg`, pos: '50% 30%' },
+  ];
+
+  const [heroIdx, setHeroIdx] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setHeroIdx((prev) => (prev + 1) % HERO_FRAMES.length);
+    }, 5000); // 5초마다 전환
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <>
       {/* ════════════════════════════════════
-          HERO — Luxurious, cinematic
+          HERO — Luxurious, cinematic slideshow
           ════════════════════════════════════ */}
       <section className="relative overflow-hidden">
         <div className="relative w-full" style={{ height: 'max(78vh, 660px)' }}>
-          {/* Parallax BG */}
+          {/* Slideshow BG — all frames stacked, opacity transition */}
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute w-full" style={{ height: '125%', top: '-12%', transform: `translateY(${py}px)` }}>
-              <img
-                src={HERO_IMG}
-                onError={(e) => { e.target.src = HERO_FALLBACK; }}
-                alt=""
-                className="w-full h-full object-cover"
-                style={{ objectPosition: '50% 25%' }}
-              />
+              {HERO_FRAMES.map((frame, i) => (
+                <img
+                  key={i}
+                  src={frame.src}
+                  alt=""
+                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[2000ms] ease-in-out"
+                  style={{
+                    objectPosition: frame.pos,
+                    opacity: heroIdx === i ? 1 : 0,
+                  }}
+                  loading={i < 2 ? 'eager' : 'lazy'}
+                />
+              ))}
             </div>
           </div>
 
@@ -233,6 +256,22 @@ export default function Home() {
                   </div>
                   <span className="sans text-[10px] tracking-[.14em] uppercase">Watch Film</span>
                 </button>
+              </div>
+
+              {/* Slide indicators */}
+              <div className="flex items-center gap-2 mt-10" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">
+                {HERO_FRAMES.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setHeroIdx(i)}
+                    className="group cursor-pointer p-1"
+                  >
+                    <div className={`h-[2px] rounded-full transition-all duration-700 ${heroIdx === i ? 'w-6 bg-white/50' : 'w-2 bg-white/[.1] group-hover:bg-white/20'}`} />
+                  </button>
+                ))}
+                <span className="sans text-[9px] text-white/[.08] ml-3 tracking-[.1em]">
+                  {String(heroIdx + 1).padStart(2, '0')} / {String(HERO_FRAMES.length).padStart(2, '0')}
+                </span>
               </div>
 
             </div>
