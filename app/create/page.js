@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-const YT = (id) => `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+const YT = (id) => `https://img.youtube.com/vi/${id}/hq720.jpg`;
 const INF = [
   { name: 'YUNA', cat: 'Beauty', f: '12.4만', vid: 'YFU4erbddog' },
   { name: 'MISO', cat: 'Fashion', f: '8.7만', vid: 'LygFajnhLFY' },
