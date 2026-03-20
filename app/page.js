@@ -3,32 +3,67 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 /* ═══════════════════════════════════════════════════════════════
-   HOOKS
+   CUSTOM AOS — Animate On Scroll engine
    ═══════════════════════════════════════════════════════════════ */
 
-function useReveal() {
-  const ref = useRef(null);
+function useAOS() {
   useEffect(() => {
+    const els = document.querySelectorAll('[data-aos]');
     const obs = new IntersectionObserver(
-      (entries) => entries.forEach((e) => {
-        if (e.isIntersecting) e.target.classList.add('visible');
-      }),
-      { threshold: 0.05 }
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            const delay = e.target.getAttribute('data-aos-delay') || 0;
+            const duration = e.target.getAttribute('data-aos-duration') || 800;
+            e.target.style.transitionDuration = `${duration}ms`;
+            setTimeout(() => e.target.classList.add('aos-animate'), Number(delay));
+          }
+        });
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
     );
-    const els = ref.current?.querySelectorAll('.reveal');
-    els?.forEach((el) => obs.observe(el));
+    els.forEach((el) => obs.observe(el));
     return () => obs.disconnect();
   }, []);
-  return ref;
-}
-
-function scrollTo(id) {
-  const el = document.getElementById(id);
-  if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' });
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   DATA — All videos and categories
+   RIGHT CLICK & DRAG PREVENTION
+   ═══════════════════════════════════════════════════════════════ */
+
+function useProtection() {
+  useEffect(() => {
+    const prevent = (e) => e.preventDefault();
+    document.addEventListener('contextmenu', prevent);
+    document.addEventListener('dragstart', prevent);
+    document.addEventListener('selectstart', prevent);
+    return () => {
+      document.removeEventListener('contextmenu', prevent);
+      document.removeEventListener('dragstart', prevent);
+      document.removeEventListener('selectstart', prevent);
+    };
+  }, []);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HELPERS
+   ═══════════════════════════════════════════════════════════════ */
+
+function scrollTo(id) {
+  const el = document.getElementById(id);
+  if (el) window.scrollTo({ top: el.offsetTop - 56, behavior: 'smooth' });
+}
+
+const YT_THUMB = (id) => `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+
+const YT_LOOP_URL = (id) =>
+  `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&showinfo=0&modestbranding=1&iv_load_policy=3&cc_load_policy=0&rel=0&playsinline=1&disablekb=1&fs=0`;
+
+const YT_MODAL_URL = (id) =>
+  `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=0&loop=1&playlist=${id}&controls=0&showinfo=0&modestbranding=1&iv_load_policy=3&cc_load_policy=0&rel=0&playsinline=1&disablekb=1&fs=0`;
+
+/* ═══════════════════════════════════════════════════════════════
+   DATA
    ═══════════════════════════════════════════════════════════════ */
 
 const VIDEOS = [
@@ -38,7 +73,7 @@ const VIDEOS = [
   { id: 'rxWNmzQpW2c', title: 'Morning Routine', creator: 'HANA', cat: 'lifestyle', views: '267K' },
   { id: 'RPmqjTwdVP8', title: 'Product Showcase', creator: 'RINA', cat: 'commerce', views: '183K' },
   { id: 'ttR0eoHz9Bg', title: 'Brand Campaign', creator: 'YUNA', cat: 'commerce', views: '445K' },
-  { id: 'YFU4erbddog', title: 'Cosmetics Review', creator: 'MISO', cat: 'beauty', views: '678K' },
+  { id: 'YFU4erbddog', title: 'Cosmetics Editorial', creator: 'MISO', cat: 'beauty', views: '678K' },
   { id: 'LygFajnhLFY', title: 'Lookbook SS26', creator: 'HANA', cat: 'fashion', views: '394K' },
   { id: 'rxWNmzQpW2c', title: 'Cafe Vlog', creator: 'RINA', cat: 'lifestyle', views: '221K' },
   { id: 'RPmqjTwdVP8', title: 'Unboxing Haul', creator: 'YUNA', cat: 'commerce', views: '156K' },
@@ -47,25 +82,19 @@ const VIDEOS = [
 ];
 
 const CATEGORIES = [
-  { key: 'all', label: '전체' },
-  { key: 'cinematic', label: '시네마틱' },
-  { key: 'beauty', label: '뷰티' },
-  { key: 'fashion', label: '패션' },
-  { key: 'lifestyle', label: '라이프' },
-  { key: 'commerce', label: '커머스' },
+  { key: 'all', label: 'All' },
+  { key: 'cinematic', label: 'Cinematic' },
+  { key: 'beauty', label: 'Beauty' },
+  { key: 'fashion', label: 'Fashion' },
+  { key: 'lifestyle', label: 'Lifestyle' },
+  { key: 'commerce', label: 'Commerce' },
 ];
 
-const YT_EMBED = (id) =>
-  `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=0&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&cc_load_policy=0&controls=1`;
-
-const YT_THUMB = (id) =>
-  `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
-
 /* ═══════════════════════════════════════════════════════════════
-   VIDEO MODAL — Cinematic fullscreen player
+   VIDEO MODAL — Fullscreen, YouTube fully hidden, loop
    ═══════════════════════════════════════════════════════════════ */
 
-function VideoModal({ videoId, title, creator, onClose }) {
+function VideoModal({ video, onClose }) {
   useEffect(() => {
     const h = (e) => e.key === 'Escape' && onClose();
     document.addEventListener('keydown', h);
@@ -78,63 +107,109 @@ function VideoModal({ videoId, title, creator, onClose }) {
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-video-wrap" onClick={(e) => e.stopPropagation()}>
         <iframe
-          src={YT_EMBED(videoId)}
-          className="w-full h-full"
-          allow="autoplay; encrypted-media; fullscreen"
+          src={YT_MODAL_URL(video.id)}
+          allow="autoplay; encrypted-media"
           allowFullScreen
+          tabIndex="-1"
         />
+        {/* Block top YouTube bar */}
+        <div className="yt-blocker" />
+        {/* Block bottom YouTube branding */}
+        <div className="yt-blocker-bottom" />
       </div>
-      <button className="modal-close" onClick={onClose}>✕</button>
 
-      {/* Video info below player */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center" onClick={(e) => e.stopPropagation()}>
-        <div className="text-white text-sm font-medium">{title}</div>
-        <div className="text-white/30 text-xs dm mt-1">by {creator} · Scenica AI</div>
+      <button className="modal-close" onClick={onClose}>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <line x1="1" y1="1" x2="13" y2="13" /><line x1="13" y1="1" x2="1" y2="13" />
+        </svg>
+      </button>
+
+      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 text-center" onClick={(e) => e.stopPropagation()}>
+        <div className="text-white/60 text-[13px] font-light tracking-wide">{video.title}</div>
+        <div className="text-white/20 text-[11px] sans mt-1 tracking-wider uppercase">{video.creator} — Scenica AI</div>
       </div>
     </div>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   VIDEO CARD — Vidu-exact hover interaction
+   VIDEO CARD — Thumbnail → Click → Inline loop play with YT hidden
    ═══════════════════════════════════════════════════════════════ */
 
-function VideoCard({ video, onClick }) {
+function VideoCard({ video, index, onExpand }) {
+  const [playing, setPlaying] = useState(false);
+
   return (
-    <div className="vcard" onClick={() => onClick(video)}>
-      <img
-        src={YT_THUMB(video.id)}
-        alt={video.title}
-        className="thumb aspect-video"
-        loading="lazy"
-      />
-      <div className="card-overlay" />
-      <div className="play-icon">
-        <svg width="16" height="18" viewBox="0 0 16 18" fill="#000">
-          <polygon points="1,0 16,9 1,18" />
-        </svg>
-      </div>
-      <div className="card-info">
-        <div className="text-white text-[13px] font-medium leading-snug">{video.title}</div>
-        <div className="flex items-center gap-2 mt-1.5">
-          <span className="text-white/40 text-[11px] dm">{video.creator}</span>
-          <span className="text-white/15 text-[11px]">·</span>
-          <span className="text-white/25 text-[11px] dm">{video.views} views</span>
+    <div
+      className="vcard"
+      data-aos="fade-up"
+      data-aos-delay={Math.min(index * 60, 360)}
+      data-aos-duration="900"
+    >
+      {!playing ? (
+        /* Thumbnail state */
+        <div onClick={() => setPlaying(true)} style={{ cursor: 'pointer' }}>
+          <img src={YT_THUMB(video.id)} alt="" className="thumb aspect-video" loading="lazy" />
+          <div className="card-overlay" />
+          <div className="play-icon">
+            <svg width="14" height="16" viewBox="0 0 14 16" fill="#000"><polygon points="1,0 14,8 1,16" /></svg>
+          </div>
+          <div className="card-info">
+            <div className="text-white/90 text-[12px] font-medium tracking-wide">{video.title}</div>
+            <div className="flex items-center gap-2 mt-1">
+              <span className="text-white/30 text-[10px] sans uppercase tracking-wider">{video.creator}</span>
+              <span className="text-white/10">|</span>
+              <span className="text-white/15 text-[10px] sans tracking-wider">{video.views}</span>
+            </div>
+          </div>
         </div>
-      </div>
+      ) : (
+        /* Playing state — YouTube hidden, auto loop */
+        <div className="aspect-video relative bg-black">
+          <div className="yt-wrap w-full h-full">
+            <iframe
+              src={YT_LOOP_URL(video.id)}
+              allow="autoplay; encrypted-media"
+              tabIndex="-1"
+            />
+            <div className="yt-blocker" />
+          </div>
+          {/* Expand & Close buttons */}
+          <div className="absolute top-3 right-3 z-10 flex gap-2">
+            <button
+              onClick={() => onExpand(video)}
+              className="w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:bg-black/80 transition-all cursor-pointer"
+              title="확대"
+            >
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.2">
+                <path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8" />
+              </svg>
+            </button>
+            <button
+              onClick={() => setPlaying(false)}
+              className="w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:bg-black/80 transition-all cursor-pointer"
+              title="닫기"
+            >
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.2">
+                <line x1="1" y1="1" x2="9" y2="9" /><line x1="9" y1="1" x2="1" y2="9" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   NAV — Ultra minimal like Vidu
+   NAV
    ═══════════════════════════════════════════════════════════════ */
 
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileMenu, setMobileMenu] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 30);
@@ -143,43 +218,36 @@ function Nav() {
   }, []);
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'nav-blur border-b border-white/[.04]' : ''}`}>
-      <div className="max-w-[1440px] mx-auto px-5 h-[56px] flex items-center justify-between">
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="flex items-center gap-2 cursor-pointer"
-        >
-          <div className="w-7 h-7 rounded-lg bg-white flex items-center justify-center">
-            <span className="text-black font-bold text-[11px] dm">S</span>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'nav-glass' : ''}`}>
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 h-[56px] flex items-center justify-between">
+        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-3 cursor-pointer group">
+          <div className="w-[28px] h-[28px] rounded-[7px] bg-white flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
+            <span className="text-black font-semibold text-[10px] sans">S</span>
           </div>
-          <span className="dm font-semibold text-[14px] text-white tracking-tight">
-            Scenica AI
-          </span>
+          <span className="sans text-[13px] font-medium text-white/80 tracking-[.04em]">Scenica AI</span>
         </button>
 
-        <div className="hidden md:flex items-center gap-1">
-          <button onClick={() => scrollTo('gallery')} className="tab">콘텐츠</button>
-          <button onClick={() => scrollTo('about')} className="tab">소개</button>
-          <button onClick={() => scrollTo('pricing')} className="tab">요금</button>
-          <button onClick={() => scrollTo('waitlist')} className="btn-w text-[12px] px-5 py-[7px] ml-3">
-            사전등록
-          </button>
+        <div className="hidden md:flex items-center gap-10">
+          <button onClick={() => scrollTo('gallery')} className="nav-link">Contents</button>
+          <button onClick={() => scrollTo('about')} className="nav-link">About</button>
+          <button onClick={() => scrollTo('pricing')} className="nav-link">Pricing</button>
+          <div className="w-[1px] h-3 bg-white/[.06] mx-2" />
+          <button onClick={() => scrollTo('waitlist')} className="nav-cta">Early Access</button>
         </div>
 
-        <button
-          onClick={() => setMobileMenu(!mobileMenu)}
-          className="md:hidden text-white/50 text-sm cursor-pointer"
-        >
-          {mobileMenu ? '닫기' : '메뉴'}
+        <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden text-white/30 text-[11px] uppercase tracking-[.15em] cursor-pointer hover:text-white/60 transition-colors">
+          {mobileOpen ? 'Close' : 'Menu'}
         </button>
       </div>
 
-      {mobileMenu && (
-        <div className="md:hidden bg-black border-t border-white/[.04] px-5 py-4 flex flex-col gap-2">
-          <button onClick={() => { scrollTo('gallery'); setMobileMenu(false); }} className="text-left text-white/40 hover:text-white py-2 text-sm cursor-pointer transition-colors">콘텐츠</button>
-          <button onClick={() => { scrollTo('about'); setMobileMenu(false); }} className="text-left text-white/40 hover:text-white py-2 text-sm cursor-pointer transition-colors">소개</button>
-          <button onClick={() => { scrollTo('pricing'); setMobileMenu(false); }} className="text-left text-white/40 hover:text-white py-2 text-sm cursor-pointer transition-colors">요금</button>
-          <button onClick={() => { scrollTo('waitlist'); setMobileMenu(false); }} className="btn-w text-sm py-2.5 mt-2 cursor-pointer">사전등록</button>
+      {mobileOpen && (
+        <div className="md:hidden bg-black/95 backdrop-blur-2xl border-t border-white/[.03] px-6 py-8 flex flex-col gap-6">
+          {['gallery', 'about', 'pricing'].map((id) => (
+            <button key={id} onClick={() => { scrollTo(id); setMobileOpen(false); }} className="text-left text-white/25 hover:text-white/60 text-[12px] uppercase tracking-[.15em] transition-colors cursor-pointer">
+              {id === 'gallery' ? 'Contents' : id === 'about' ? 'About' : 'Pricing'}
+            </button>
+          ))}
+          <button onClick={() => { scrollTo('waitlist'); setMobileOpen(false); }} className="nav-cta text-center mt-2 cursor-pointer">Early Access</button>
         </div>
       )}
     </nav>
@@ -187,78 +255,89 @@ function Nav() {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   HERO — Featured video, massive, cinematic
+   HERO — Cinematic parallax, editorial
    ═══════════════════════════════════════════════════════════════ */
 
 function Hero({ onVideoClick }) {
-  const featured = VIDEOS[0];
+  const [parallaxY, setParallaxY] = useState(0);
+  const featured = VIDEOS[1];
+
+  useEffect(() => {
+    const h = () => setParallaxY(window.scrollY * 0.25);
+    window.addEventListener('scroll', h, { passive: true });
+    return () => window.removeEventListener('scroll', h);
+  }, []);
 
   return (
-    <section className="pt-[56px]">
-      {/* Featured Video — Full width, cinema ratio */}
-      <div className="relative w-full cursor-pointer group" onClick={() => onVideoClick(featured)}>
-        <div className="w-full" style={{ aspectRatio: '2.35/1', minHeight: '45vh', maxHeight: '75vh' }}>
-          <img
-            src={YT_THUMB(featured.id)}
-            alt={featured.title}
-            className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-[2s] ease-out"
-          />
+    <section className="relative pt-[56px] overflow-hidden">
+      <div className="relative w-full" style={{ height: 'max(58vh, 520px)' }}>
+        {/* Parallax background */}
+        <div className="absolute inset-0 w-full" style={{ height: '130%', top: '-15%', transform: `translateY(${parallaxY}px)` }}>
+          <img src={YT_THUMB(featured.id)} alt="" className="w-full h-full object-cover" style={{ objectPosition: '50% 25%' }} />
         </div>
 
-        {/* Gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" />
+        {/* Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/20 to-transparent" />
 
-        {/* Content overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12">
-          <div className="max-w-[1440px] mx-auto">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[.08] backdrop-blur-sm mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
-              <span className="text-[11px] text-white/60 dm">Early Access Open</span>
+        {/* Content */}
+        <div className="absolute inset-0 flex items-end">
+          <div className="max-w-[1440px] w-full mx-auto px-6 md:px-10 pb-14 md:pb-20">
+            <div className="hero-badge mb-8" data-aos="fade-up" data-aos-duration="600">
+              <span className="w-[5px] h-[5px] rounded-full bg-emerald-400 animate-pulse" />
+              <span className="sans">Early Access Open</span>
             </div>
 
-            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight max-w-2xl">
+            <h1
+              className="serif text-[38px] sm:text-[50px] md:text-[68px] lg:text-[82px] font-light text-white leading-[1.05] tracking-tight max-w-3xl"
+              style={{ letterSpacing: '-0.03em' }}
+              data-aos="fade-up"
+              data-aos-delay="100"
+              data-aos-duration="1000"
+            >
               AI 인플루언서가<br />직접 팔아줍니다
             </h1>
 
-            <p className="text-white/35 text-sm md:text-base mt-4 max-w-md leading-relaxed">
-              상품만 등록하세요. 팔로워 10만+ AI 인플루언서가
+            <p
+              className="text-white/30 text-[14px] font-light leading-[1.8] max-w-md mt-6"
+              data-aos="fade-up"
+              data-aos-delay="200"
+              data-aos-duration="1000"
+            >
+              상품만 등록하세요. 팔로워 10만+ AI 인플루언서가<br />
               영상 제작부터 판매까지 전부 자동으로.
             </p>
 
-            <div className="flex items-center gap-3 mt-6">
-              <button
-                onClick={(e) => { e.stopPropagation(); scrollTo('waitlist'); }}
-                className="btn-w text-[13px] px-6 py-2.5 cursor-pointer"
-              >
-                사전등록
-              </button>
-              <div className="flex items-center gap-2 text-white/30 text-sm">
-                <div className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white/10 transition-colors">
-                  <svg width="12" height="14" viewBox="0 0 12 14" fill="white"><polygon points="1,0 12,7 1,14" /></svg>
+            <div className="flex items-center gap-5 mt-8" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000">
+              <button onClick={() => scrollTo('waitlist')} className="hero-btn hero-btn-primary">사전등록</button>
+              <button onClick={() => onVideoClick(featured)} className="hero-btn hero-btn-ghost">
+                <div className="play-circle">
+                  <svg width="10" height="12" viewBox="0 0 10 12" fill="white"><polygon points="1,0 10,6 1,12" /></svg>
                 </div>
-                <span className="dm text-[12px]">Watch Film</span>
-              </div>
+                <span className="sans text-[11px] tracking-[.12em] uppercase">Watch Film</span>
+              </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Minimal stat bar */}
+      {/* Stats */}
       <div className="sep" />
-      <div className="max-w-[1440px] mx-auto px-5 py-5 flex items-center justify-between overflow-x-auto gap-6">
-        {[
-          { v: '130건', l: '의뢰' },
-          { v: '3.2억', l: '거래액' },
-          { v: '9배', l: '전환율' },
-          { v: '97%', l: '절감' },
-          { v: '40만+', l: '팔로워' },
-        ].map((s) => (
-          <div key={s.l} className="flex items-center gap-2 shrink-0">
-            <span className="dm text-white/70 text-[13px] font-medium">{s.v}</span>
-            <span className="text-white/15 text-[11px]">{s.l}</span>
-          </div>
-        ))}
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10" data-aos="fade-up" data-aos-delay="100">
+        <div className="stat-row">
+          {[
+            { v: '130', u: '건', l: 'Orders' },
+            { v: '3.2', u: '억', l: 'Revenue' },
+            { v: '9', u: 'x', l: 'Conversion' },
+            { v: '97', u: '%', l: 'Cost Saved' },
+            { v: '40', u: '만+', l: 'Followers' },
+          ].map((s, i) => (
+            <div key={s.l} className="stat-item" data-aos="fade-up" data-aos-delay={i * 80}>
+              <span className="stat-num">{s.v}<span className="text-[16px]">{s.u}</span></span>
+              <span className="stat-label">{s.l}</span>
+            </div>
+          ))}
+        </div>
       </div>
       <div className="sep" />
     </section>
@@ -266,54 +345,67 @@ function Hero({ onVideoClick }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   GALLERY — Category tabs + video grid (THE MAIN SECTION)
+   GALLERY — Tabs + Grid with AOS stagger
    ═══════════════════════════════════════════════════════════════ */
 
 function Gallery({ onVideoClick }) {
-  const ref = useReveal();
   const [activeCat, setActiveCat] = useState('all');
+  const [key, setKey] = useState(0);
 
-  const filtered = activeCat === 'all'
-    ? VIDEOS
-    : VIDEOS.filter((v) => v.cat === activeCat);
+  const filtered = activeCat === 'all' ? VIDEOS : VIDEOS.filter((v) => v.cat === activeCat);
+
+  const changeCat = (cat) => {
+    setActiveCat(cat);
+    setKey((k) => k + 1);
+  };
+
+  // Re-trigger AOS after filter change
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const els = document.querySelectorAll('#gallery [data-aos]');
+      els.forEach((el) => {
+        el.classList.remove('aos-animate');
+        void el.offsetWidth;
+        const delay = el.getAttribute('data-aos-delay') || 0;
+        const duration = el.getAttribute('data-aos-duration') || 800;
+        el.style.transitionDuration = `${duration}ms`;
+        setTimeout(() => el.classList.add('aos-animate'), Number(delay));
+      });
+    }, 50);
+    return () => clearTimeout(timer);
+  }, [key]);
 
   return (
-    <section id="gallery" className="px-5 py-10" ref={ref}>
+    <section id="gallery" className="px-6 md:px-10 py-14">
       <div className="max-w-[1440px] mx-auto">
-
-        {/* Tabs — Vidu style */}
-        <div className="flex items-center gap-1 mb-8 overflow-x-auto pb-2 reveal">
+        {/* Tabs */}
+        <div className="tab-bar mb-10" data-aos="fade-up" data-aos-duration="600">
           {CATEGORIES.map((cat) => (
             <button
               key={cat.key}
-              onClick={() => setActiveCat(cat.key)}
-              className={`tab ${activeCat === cat.key ? 'active' : ''}`}
+              onClick={() => changeCat(cat.key)}
+              className={`tab-item ${activeCat === cat.key ? 'active' : ''}`}
             >
               {cat.label}
             </button>
           ))}
         </div>
 
-        {/* Video Grid */}
-        <div className="vid-grid reveal">
+        {/* Grid */}
+        <div className="vid-grid" key={key}>
           {filtered.map((video, i) => (
-            <div
-              key={`${video.id}-${i}`}
-              className="reveal"
-              style={{ transitionDelay: `${Math.min(i * 0.04, 0.3)}s` }}
-            >
-              <VideoCard video={video} onClick={onVideoClick} />
-            </div>
+            <VideoCard
+              key={`${video.id}-${i}-${key}`}
+              video={video}
+              index={i}
+              onExpand={onVideoClick}
+            />
           ))}
         </div>
 
-        {/* Load more hint */}
-        <div className="text-center mt-10 reveal">
-          <button
-            onClick={() => scrollTo('waitlist')}
-            className="btn-o text-[12px] px-6 py-2.5 dm cursor-pointer"
-          >
-            사전등록하고 더 많은 콘텐츠 보기 →
+        <div className="text-center mt-12" data-aos="fade-up" data-aos-delay="200">
+          <button onClick={() => scrollTo('waitlist')} className="btn-o cursor-pointer sans">
+            Get Early Access
           </button>
         </div>
       </div>
@@ -322,57 +414,70 @@ function Gallery({ onVideoClick }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   ABOUT — Brief, clean, no fluff
+   ABOUT
    ═══════════════════════════════════════════════════════════════ */
 
 function About() {
-  const ref = useReveal();
-
   return (
-    <section id="about" className="px-5 py-20" ref={ref}>
-      <div className="sep mb-20" />
-      <div className="max-w-[860px] mx-auto reveal">
-        <div className="text-center mb-16">
-          <span className="dm text-[11px] text-white/15 uppercase tracking-[3px]">About Scenica AI</span>
-          <h2 className="text-white text-xl md:text-3xl font-semibold mt-5 leading-snug tracking-tight">
+    <section id="about" className="px-6 md:px-10 py-24">
+      <div className="sep mb-24" />
+      <div className="max-w-[900px] mx-auto">
+        <div className="text-center mb-20">
+          <span className="sans text-[10px] text-white/10 uppercase tracking-[.25em]" data-aos="fade-up">About Scenica AI</span>
+          <h2
+            className="serif text-[28px] md:text-[42px] font-light text-white mt-6 leading-[1.15]"
+            style={{ letterSpacing: '-0.02em' }}
+            data-aos="fade-up"
+            data-aos-delay="100"
+            data-aos-duration="1000"
+          >
             셀러는 상품만 등록하세요.<br />
             AI 인플루언서가 만들고, 띄우고, 팔아줍니다.
           </h2>
+          <p className="text-white/20 text-[14px] font-light leading-[1.9] mt-6 max-w-lg mx-auto" data-aos="fade-up" data-aos-delay="200">
+            Scenica AI는 팔로워 10만+ AI 인플루언서가 영상 제작부터 채널 게시,
+            판매 전환 추적, 수수료 정산까지 전체 커머스 파이프라인을 자동화합니다.
+          </p>
         </div>
 
-        {/* Process — 4 steps, ultra clean */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-[1px] bg-[#111] rounded-xl overflow-hidden reveal">
+        {/* Steps */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-[1px] bg-white/[.03] rounded-lg overflow-hidden">
           {[
-            { n: '01', t: '상품 등록', d: '이미지와 정보만 올려주세요' },
+            { n: '01', t: '상품 등록', d: '이미지와 정보만' },
             { n: '02', t: 'AI 영상 생성', d: '22단계 파이프라인' },
-            { n: '03', t: '채널 게시', d: '팔로워 10만+ 채널' },
-            { n: '04', t: '판매 정산', d: '전환 추적 · 자동 정산' },
-          ].map((step) => (
-            <div key={step.n} className="bg-black p-5 md:p-7">
-              <div className="dm text-white/[.07] text-[28px] font-bold mb-5">{step.n}</div>
-              <div className="text-white text-[13px] font-medium mb-1">{step.t}</div>
-              <div className="text-white/20 text-[11px] leading-relaxed">{step.d}</div>
+            { n: '03', t: '채널 게시', d: '10만+ 팔로워' },
+            { n: '04', t: '판매 정산', d: '자동 추적 · 정산' },
+          ].map((step, i) => (
+            <div
+              key={step.n}
+              className="bg-black p-6 md:p-8 group hover:bg-white/[.01] transition-colors duration-500"
+              data-aos="fade-up"
+              data-aos-delay={i * 100}
+            >
+              <div className="serif text-white/[.05] text-[32px] font-light mb-6 group-hover:text-white/[.1] transition-colors duration-500">{step.n}</div>
+              <div className="text-white/70 text-[13px] font-medium mb-1 tracking-wide">{step.t}</div>
+              <div className="text-white/15 text-[11px] font-light">{step.d}</div>
             </div>
           ))}
         </div>
 
-        {/* Comparison — one clean row */}
-        <div className="grid grid-cols-3 gap-[1px] bg-[#111] rounded-xl overflow-hidden mt-4 reveal">
-          <div className="bg-black p-5 text-center">
-            <div className="text-white/15 text-[10px] dm uppercase tracking-wider mb-2">인플루언서 섭외</div>
-            <div className="text-white/30 dm text-base">30~500만원</div>
-            <div className="text-white/10 text-[10px] mt-1">건당</div>
+        {/* Comparison */}
+        <div className="grid grid-cols-3 gap-[1px] bg-white/[.03] rounded-lg overflow-hidden mt-3" data-aos="fade-up" data-aos-delay="100">
+          <div className="bg-black p-6 text-center hover:bg-white/[.01] transition-colors duration-500">
+            <div className="sans text-[9px] text-white/10 uppercase tracking-[.2em] mb-3">인플루언서 섭외</div>
+            <div className="serif text-white/25 text-[20px] font-light">30~500만</div>
+            <div className="text-white/[.06] text-[10px] mt-1 sans">건당</div>
           </div>
-          <div className="bg-[#080808] p-5 text-center relative">
-            <div className="absolute top-0 left-[20%] right-[20%] h-[1px] bg-white/20" />
-            <div className="text-white/30 text-[10px] dm uppercase tracking-wider mb-2">Scenica AI</div>
-            <div className="text-white dm text-base font-semibold">₩30,000</div>
-            <div className="text-white/20 text-[10px] mt-1">월 구독</div>
+          <div className="bg-[#060606] p-6 text-center relative">
+            <div className="absolute top-0 left-[25%] right-[25%] h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+            <div className="sans text-[9px] text-white/20 uppercase tracking-[.2em] mb-3">Scenica AI</div>
+            <div className="serif text-white/80 text-[20px] font-light">30,000</div>
+            <div className="text-white/15 text-[10px] mt-1 sans">월 구독</div>
           </div>
-          <div className="bg-black p-5 text-center">
-            <div className="text-white/15 text-[10px] dm uppercase tracking-wider mb-2">AI 영상 툴</div>
-            <div className="text-white/30 dm text-base">채널 없음</div>
-            <div className="text-white/10 text-[10px] mt-1">영상만 생성</div>
+          <div className="bg-black p-6 text-center hover:bg-white/[.01] transition-colors duration-500">
+            <div className="sans text-[9px] text-white/10 uppercase tracking-[.2em] mb-3">AI 영상 툴</div>
+            <div className="serif text-white/25 text-[20px] font-light">채널 없음</div>
+            <div className="text-white/[.06] text-[10px] mt-1 sans">영상만 생성</div>
           </div>
         </div>
       </div>
@@ -381,78 +486,52 @@ function About() {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   PRICING — Dark, minimal, Vidu-grade
+   PRICING
    ═══════════════════════════════════════════════════════════════ */
 
 function Pricing() {
-  const ref = useReveal();
-
   const plans = [
-    {
-      name: 'Free',
-      price: '₩0',
-      period: '',
-      desc: '체험용',
-      features: ['AI 콘텐츠 3건/월', '720p', '기본 리포트'],
-      featured: false,
-    },
-    {
-      name: 'Pro',
-      price: '₩30,000',
-      period: '/월',
-      desc: '셀러용',
-      features: ['무제한 콘텐츠', 'AI 채널 게시', '4K', '전환 추적', '수수료 자동정산', '브랜드 학습'],
-      featured: true,
-    },
-    {
-      name: 'Enterprise',
-      price: 'Custom',
-      period: '',
-      desc: '에이전시',
-      features: ['전용 AI 인플루언서', 'API', '팀 대시보드', '전담 매니저'],
-      featured: false,
-    },
+    { name: 'Free', price: '0', sym: '₩', period: '', desc: '체험', features: ['AI 콘텐츠 3건/월', '720p', '기본 리포트'], featured: false },
+    { name: 'Pro', price: '30,000', sym: '₩', period: '/월', desc: '셀러', features: ['무제한 콘텐츠', 'AI 채널 게시', '4K', '전환 추적', '수수료 자동정산', '브랜드 학습'], featured: true },
+    { name: 'Enterprise', price: 'Custom', sym: '', period: '', desc: '에이전시', features: ['전용 AI 인플루언서', 'API', '팀 대시보드', '전담 매니저'], featured: false },
   ];
 
   return (
-    <section id="pricing" className="px-5 py-20" ref={ref}>
-      <div className="sep mb-20" />
+    <section id="pricing" className="px-6 md:px-10 py-24">
+      <div className="sep mb-24" />
       <div className="max-w-[960px] mx-auto">
-        <div className="text-center mb-14 reveal">
-          <span className="dm text-[11px] text-white/15 uppercase tracking-[3px]">Pricing</span>
-          <h2 className="text-white text-xl md:text-2xl font-semibold mt-5">심플한 요금제</h2>
-          <p className="text-white/15 text-[13px] mt-2">사전등록 시 Pro 50% 할인</p>
+        <div className="text-center mb-16">
+          <span className="sans text-[10px] text-white/10 uppercase tracking-[.25em]" data-aos="fade-up">Pricing</span>
+          <h2 className="serif text-[28px] md:text-[36px] font-light text-white mt-6" style={{ letterSpacing: '-0.02em' }} data-aos="fade-up" data-aos-delay="100">
+            심플한 요금제
+          </h2>
+          <p className="text-white/10 text-[13px] mt-3 sans" data-aos="fade-up" data-aos-delay="150">사전등록 시 Pro 50% 할인</p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-4 reveal">
-          {plans.map((p) => (
+        <div className="grid md:grid-cols-3 gap-4">
+          {plans.map((p, i) => (
             <div
               key={p.name}
-              className={`price-card p-6 relative ${p.featured ? 'featured' : ''}`}
+              className={`price-card relative ${p.featured ? 'featured' : ''}`}
+              data-aos="fade-up"
+              data-aos-delay={i * 120}
             >
-              <div className="dm text-white/20 text-[11px] uppercase tracking-[2px] mb-1">{p.name}</div>
-              <div className="text-white/30 text-[11px] mb-5">{p.desc}</div>
-
-              <div className="flex items-baseline gap-1 mb-6">
-                <span className="dm text-white text-2xl font-bold">{p.price}</span>
-                {p.period && <span className="text-white/20 text-sm">{p.period}</span>}
+              {p.featured && <div className="absolute top-0 left-[20%] right-[20%] h-[1px] bg-gradient-to-r from-transparent via-white/25 to-transparent" />}
+              <div className="sans text-[9px] text-white/15 uppercase tracking-[.2em] mb-1">{p.name}</div>
+              <div className="text-white/10 text-[11px] mb-6">{p.desc}</div>
+              <div className="flex items-baseline gap-[2px] mb-8">
+                <span className="sans text-white/30 text-[14px]">{p.sym}</span>
+                <span className="serif text-white/80 text-[32px] font-light">{p.price}</span>
+                {p.period && <span className="text-white/15 text-[12px] sans">{p.period}</span>}
               </div>
-
-              <ul className="space-y-2.5 mb-8">
+              <ul className="space-y-3 mb-10">
                 {p.features.map((f) => (
-                  <li key={f} className="text-white/30 text-[12px] flex items-center gap-2">
-                    <span className="w-1 h-1 rounded-full bg-white/15" />
-                    {f}
+                  <li key={f} className="text-white/20 text-[12px] flex items-center gap-3 font-light">
+                    <span className="w-[3px] h-[3px] rounded-full bg-white/10 shrink-0" />{f}
                   </li>
                 ))}
               </ul>
-
-              <button
-                onClick={() => scrollTo('waitlist')}
-                className={`w-full py-2.5 rounded-full text-[12px] font-medium cursor-pointer transition-all ${
-                  p.featured ? 'btn-w' : 'btn-o'
-                }`}
-              >
+              <button onClick={() => scrollTo('waitlist')} className={`w-full py-[10px] cursor-pointer ${p.featured ? 'btn-w' : 'btn-o'}`}>
                 {p.featured ? '사전등록 (50% 할인)' : p.name === 'Enterprise' ? '문의하기' : '무료 시작'}
               </button>
             </div>
@@ -464,11 +543,10 @@ function Pricing() {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   WAITLIST — Clean email form
+   WAITLIST
    ═══════════════════════════════════════════════════════════════ */
 
 function Waitlist() {
-  const ref = useReveal();
   const [email, setEmail] = useState('');
   const [done, setDone] = useState(false);
   const [err, setErr] = useState('');
@@ -476,110 +554,93 @@ function Waitlist() {
   const submit = () => {
     if (!email) { setErr('이메일을 입력해주세요'); return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setErr('올바른 형식이 아닙니다'); return; }
-    setErr('');
-    setDone(true);
+    setErr(''); setDone(true);
   };
 
   return (
-    <section id="waitlist" className="px-5 py-20" ref={ref}>
-      <div className="sep mb-20" />
-      <div className="max-w-md mx-auto text-center reveal">
-        <h2 className="text-white text-xl font-semibold mb-2">사전등록</h2>
-        <p className="text-white/15 text-[13px] mb-8">Pro 50% 할인 + 1개월 무료 체험</p>
+    <section id="waitlist" className="px-6 md:px-10 py-24">
+      <div className="sep mb-24" />
+      <div className="max-w-md mx-auto text-center">
+        <span className="sans text-[10px] text-white/10 uppercase tracking-[.25em]" data-aos="fade-up">Early Access</span>
+        <h2 className="serif text-[24px] md:text-[32px] font-light text-white mt-6 mb-3" style={{ letterSpacing: '-0.02em' }} data-aos="fade-up" data-aos-delay="100">
+          사전등록
+        </h2>
+        <p className="text-white/10 text-[13px] mb-10 font-light" data-aos="fade-up" data-aos-delay="150">Pro 50% 할인 + 1개월 무료 체험</p>
 
-        {!done ? (
-          <div>
-            <div className="flex gap-2">
-              <input
-                type="email"
-                placeholder="이메일 주소"
-                value={email}
-                onChange={(e) => { setEmail(e.target.value); setErr(''); }}
-                onKeyDown={(e) => e.key === 'Enter' && submit()}
-                className="flex-1 px-4 py-3 text-[13px]"
-              />
-              <button onClick={submit} className="btn-w px-5 py-3 text-[12px] dm cursor-pointer shrink-0">
-                등록
-              </button>
+        <div data-aos="fade-up" data-aos-delay="200">
+          {!done ? (
+            <div>
+              <div className="flex gap-2">
+                <input
+                  type="email"
+                  placeholder="이메일 주소"
+                  value={email}
+                  onChange={(e) => { setEmail(e.target.value); setErr(''); }}
+                  onKeyDown={(e) => e.key === 'Enter' && submit()}
+                  className="flex-1 px-5 py-3"
+                />
+                <button onClick={submit} className="btn-w shrink-0 cursor-pointer">등록</button>
+              </div>
+              {err && <p className="text-red-400/40 text-[11px] mt-3 text-left pl-1">{err}</p>}
             </div>
-            {err && <p className="text-red-500/50 text-[11px] mt-2 text-left">{err}</p>}
-          </div>
-        ) : (
-          <div className="py-4">
-            <div className="text-white text-sm font-medium mb-1">등록 완료</div>
-            <p className="text-white/20 text-[13px]">출시 시 알려드리겠습니다.</p>
-          </div>
-        )}
+          ) : (
+            <div className="py-6">
+              <div className="serif text-white/60 text-[20px] font-light mb-2">등록 완료</div>
+              <p className="text-white/15 text-[13px] font-light">출시 시 알려드리겠습니다.</p>
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   FOOTER — Minimal
+   FOOTER
    ═══════════════════════════════════════════════════════════════ */
 
 function Footer() {
   return (
-    <footer className="px-5 py-8">
-      <div className="sep mb-8" />
-      <div className="max-w-[1440px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="flex items-center gap-1.5 cursor-pointer group"
-        >
-          <div className="w-5 h-5 rounded bg-white/10 flex items-center justify-center group-hover:bg-white/15 transition-colors">
-            <span className="text-white/50 text-[9px] dm font-bold">S</span>
+    <footer className="px-6 md:px-10 py-10">
+      <div className="sep mb-10" />
+      <div className="max-w-[1440px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2 cursor-pointer group">
+          <div className="w-5 h-5 rounded-[4px] bg-white/[.06] flex items-center justify-center group-hover:bg-white/[.1] transition-colors duration-500">
+            <span className="text-white/30 text-[8px] sans font-semibold">S</span>
           </div>
-          <span className="dm text-[12px] text-white/10 group-hover:text-white/20 transition-colors">Scenica AI</span>
+          <span className="sans text-[11px] text-white/[.08] group-hover:text-white/15 transition-colors duration-500 tracking-wider">Scenica AI</span>
         </button>
-
-        <div className="flex items-center gap-5 text-[11px] text-white/10 dm">
-          <a href="mailto:hello@scenica.ai" className="hover:text-white/25 transition-colors">Contact</a>
+        <div className="flex items-center gap-8 sans text-[10px] text-white/[.08] tracking-[.1em] uppercase">
+          <a href="mailto:hello@scenica.ai" className="hover:text-white/20 transition-colors duration-500 cursor-pointer">Contact</a>
           <span>Terms</span>
           <span>Privacy</span>
         </div>
-
-        <span className="dm text-[11px] text-white/[.06]">© 2026</span>
+        <span className="sans text-[10px] text-white/[.05] tracking-wider">2026</span>
       </div>
     </footer>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   MAIN PAGE
+   MAIN
    ═══════════════════════════════════════════════════════════════ */
 
 export default function Home() {
   const [modal, setModal] = useState(null);
 
-  const openVideo = useCallback((video) => {
-    setModal(video);
-  }, []);
-
-  const closeVideo = useCallback(() => {
-    setModal(null);
-  }, []);
+  useAOS();
+  useProtection();
 
   return (
     <main className="bg-black min-h-screen">
       <Nav />
-      <Hero onVideoClick={openVideo} />
-      <Gallery onVideoClick={openVideo} />
+      <Hero onVideoClick={setModal} />
+      <Gallery onVideoClick={setModal} />
       <About />
       <Pricing />
       <Waitlist />
       <Footer />
-
-      {/* Video Modal */}
-      {modal && (
-        <VideoModal
-          videoId={modal.id}
-          title={modal.title}
-          creator={modal.creator}
-          onClose={closeVideo}
-        />
-      )}
+      {modal && <VideoModal video={modal} onClose={() => setModal(null)} />}
     </main>
   );
 }
