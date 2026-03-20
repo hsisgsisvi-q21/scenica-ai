@@ -25,7 +25,9 @@ const CATS = [
   { key: 'lifestyle', label: 'Lifestyle' }, { key: 'commerce', label: 'Commerce' },
 ];
 
+// Smart thumbnail - hq720 with fallback to hqdefault (guaranteed for ALL videos)
 const YT = (id) => `https://img.youtube.com/vi/${id}/hq720.jpg`;
+const YT_FALLBACK = (id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
 const EMBED = (id) => `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&showinfo=0&modestbranding=1&iv_load_policy=3&cc_load_policy=0&rel=0&playsinline=1&disablekb=1&fs=0&enablejsapi=1`;
 
 /* ═══ AOS ═══ */
@@ -106,7 +108,7 @@ function Modal({ video, onClose }) {
 function Card({ video, i, onClick }) {
   return (
     <div className="vcard" onClick={() => onClick(video)} data-aos="fade-up" data-aos-delay={Math.min(i * 50, 300)} data-aos-duration="900">
-      <img src={YT(video.id)} alt="" className="thumb aspect-video" loading="lazy" />
+      <img src={YT(video.id)} onError={(e)=>{e.target.src=YT_FALLBACK(video.id)}} alt="" className="thumb aspect-video" loading="lazy" />
       <div className="card-overlay" />
       <div className="play-icon">
         <svg width="13" height="15" viewBox="0 0 13 15" fill="#000"><polygon points="1.5,0 13,7.5 1.5,15"/></svg>
@@ -156,18 +158,18 @@ export default function Home() {
 
   const hero = VIDEOS[1];
 
-  // 10 genuinely different images from 7 unique videos
+  // 10 frames — ttR0eoHz9Bg uses hqdefault since hq720 doesn't exist for it
   const HERO_FRAMES = [
     { src: `https://img.youtube.com/vi/YFU4erbddog/hq720.jpg`, pos: '50% 20%', scale: '1.05' },
     { src: `https://img.youtube.com/vi/wMdSqpTGxJo/hq720.jpg`, pos: '50% 25%', scale: '1.08' },
     { src: `https://img.youtube.com/vi/LygFajnhLFY/hq720.jpg`, pos: '45% 15%', scale: '1.06' },
-    { src: `https://img.youtube.com/vi/ttR0eoHz9Bg/hq720.jpg`, pos: '50% 25%', scale: '1.04' },
+    { src: `https://img.youtube.com/vi/ttR0eoHz9Bg/hqdefault.jpg`, pos: '50% 25%', scale: '1.04' },
     { src: `https://img.youtube.com/vi/VU52Kx2AXL8/hq720.jpg`, pos: '50% 30%', scale: '1.07' },
     { src: `https://img.youtube.com/vi/rxWNmzQpW2c/hq720.jpg`, pos: '50% 20%', scale: '1.1' },
     { src: `https://img.youtube.com/vi/RPmqjTwdVP8/hq720.jpg`, pos: '50% 25%', scale: '1.05' },
     { src: `https://img.youtube.com/vi/wMdSqpTGxJo/hq720.jpg`, pos: '60% 20%', scale: '1.12' },
-    { src: `https://img.youtube.com/vi/YFU4erbddog/hq720.jpg`, pos: '60% 30%', scale: '1.15' },
-    { src: `https://img.youtube.com/vi/LygFajnhLFY/hq720.jpg`, pos: '55% 25%', scale: '1.09' },
+    { src: `https://img.youtube.com/vi/ttR0eoHz9Bg/hqdefault.jpg`, pos: '55% 30%', scale: '1.15' },
+    { src: `https://img.youtube.com/vi/YFU4erbddog/hq720.jpg`, pos: '60% 30%', scale: '1.09' },
   ];
 
   const [heroIdx, setHeroIdx] = useState(0);
@@ -320,7 +322,7 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3" data-aos="fade-up" data-aos-delay="80">
           {[VIDEOS[0], VIDEOS[3]].map((v, i) => (
             <div key={v.id + i} className="vcard cursor-pointer" onClick={() => setModal(v)}>
-              <img src={YT(v.id)} alt="" className="thumb aspect-[21/10] md:aspect-[2/1]" />
+              <img src={YT(v.id)} onError={(e)=>{e.target.src=YT_FALLBACK(v.id)}} alt="" className="thumb aspect-[21/10] md:aspect-[2/1]" />
               <div className="card-overlay" style={{ opacity: 1, background: 'linear-gradient(0deg, rgba(0,0,0,.7) 0%, transparent 60%)' }} />
               <div className="play-icon">
                 <svg width="13" height="15" viewBox="0 0 13 15" fill="#000"><polygon points="1.5,0 13,7.5 1.5,15"/></svg>
@@ -447,7 +449,7 @@ export default function Home() {
             ].map((inf) => (
               <Link key={inf.name} href="/influencers" className="inf-profile group">
                 <div className="aspect-[3/4] relative overflow-hidden">
-                  <img src={YT(inf.vid)} alt="" className="w-full h-full object-cover" style={{ objectPosition: '50% 20%' }} />
+                  <img src={YT(inf.vid)} onError={(e)=>{e.target.src=YT_FALLBACK(inf.vid)}} alt="" className="w-full h-full object-cover" style={{ objectPosition: '50% 20%' }} />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
                     <div className="sans text-[8px] text-white/20 uppercase tracking-[.2em] mb-1.5">{inf.cat}</div>
