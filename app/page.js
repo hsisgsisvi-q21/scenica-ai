@@ -156,6 +156,10 @@ export default function Home() {
 
   const hero = VIDEOS[1]; // Night City Mood
 
+  // Different frame cuts from YouTube (25%, 50%, 75% of video)
+  const HERO_IMG = `https://img.youtube.com/vi/ttR0eoHz9Bg/maxres2.jpg`;
+  const HERO_FALLBACK = `https://img.youtube.com/vi/ttR0eoHz9Bg/maxresdefault.jpg`;
+
   return (
     <>
       {/* ════════════════════════════════════
@@ -166,7 +170,13 @@ export default function Home() {
           {/* Parallax BG */}
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute w-full" style={{ height: '125%', top: '-12%', transform: `translateY(${py}px)` }}>
-              <img src={YT(hero.id)} alt="" className="w-full h-full object-cover" style={{ objectPosition: '50% 18%' }} />
+              <img
+                src={HERO_IMG}
+                onError={(e) => { e.target.src = HERO_FALLBACK; }}
+                alt=""
+                className="w-full h-full object-cover"
+                style={{ objectPosition: '50% 25%' }}
+              />
             </div>
           </div>
 
