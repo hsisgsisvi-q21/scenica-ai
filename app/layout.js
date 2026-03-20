@@ -1,12 +1,12 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'Scenica AI — 상품 사진 1장으로 광고 영상 제작',
-  description: '소상공인을 위한 AI 영상 제작 플랫폼. 상품 이미지 하나로 몇 분 만에 광고 영상을 만들어 보세요.',
-  keywords: 'AI, 영상제작, 광고영상, 소상공인, 자동영상, Scenica',
+  title: 'Scenica AI — AI 인플루언서가 직접 팔아주는 숏폼 이커머스',
+  description: '팔로워 10만+ AI 인플루언서가 영상 제작부터 채널 게시, 판매까지. 셀러는 상품만 등록하세요. 월 3만원으로 시작.',
+  keywords: 'AI인플루언서, 숏폼커머스, AI영상, 소상공인, 이커머스, Scenica',
   openGraph: {
-    title: 'Scenica AI — 상품 사진 1장으로 광고 영상 제작',
-    description: '소상공인을 위한 AI 영상 제작 플랫폼',
+    title: 'Scenica AI — AI 인플루언서가 직접 팔아주는 숏폼 이커머스',
+    description: '상품만 등록하면, AI 인플루언서가 만들고 띄우고 팔아줍니다',
     type: 'website',
   },
 };
