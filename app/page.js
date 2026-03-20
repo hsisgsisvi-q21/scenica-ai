@@ -94,7 +94,7 @@ export default function Home() {
   const [activeCat, setActiveCat] = useState('all');
   const [key, setKey] = useState(0);
   const [parallaxY, setParallaxY] = useState(0);
-  const featured = VIDEOS[2];
+  const featured = VIDEOS[1]; // Shh No Talk Tonight - YUNA
 
   useAOS();
 
@@ -123,26 +123,26 @@ export default function Home() {
     <>
       {/* HERO */}
       <section className="relative overflow-hidden">
-        <div className="relative w-full" style={{ height: 'max(60vh, 540px)' }}>
-          <div className="absolute inset-0 w-full" style={{ height: '130%', top: '-15%', transform: `translateY(${parallaxY}px)` }}>
-            <img src={YT_THUMB(featured.id)} alt="" className="w-full h-full object-cover" style={{ objectPosition: '50% 30%' }} />
+        <div className="relative w-full" style={{ height: 'max(70vh, 600px)' }}>
+          <div className="absolute inset-0 w-full" style={{ height: '125%', top: '-12%', transform: `translateY(${parallaxY}px)` }}>
+            <img src={YT_THUMB(featured.id)} alt="" className="w-full h-full object-cover" style={{ objectPosition: '50% 20%' }} />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-black/60" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/50" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent" />
 
           <div className="absolute inset-0 flex items-end">
-            <div className="page-container pb-14 md:pb-20 w-full">
-              <div className="hero-badge mb-8" data-aos="fade-up" data-aos-duration="600">
+            <div className="page-container pb-16 md:pb-24 w-full">
+              <div className="hero-badge mb-6" data-aos="fade-up" data-aos-duration="600">
                 <span className="w-[5px] h-[5px] rounded-full bg-emerald-400 animate-pulse" />
                 <span className="sans">Early Access Open</span>
               </div>
-              <h1 className="serif text-[38px] sm:text-[50px] md:text-[68px] lg:text-[82px] font-light text-white leading-[1.05] max-w-3xl" style={{ letterSpacing: '-0.03em' }} data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000">
+              <h1 className="serif text-[36px] sm:text-[48px] md:text-[64px] lg:text-[78px] font-light text-white leading-[1.08] max-w-2xl" style={{ letterSpacing: '-0.03em' }} data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000">
                 AI 인플루언서가<br />직접 팔아줍니다
               </h1>
-              <p className="text-white/30 text-[14px] font-light leading-[1.8] max-w-md mt-6" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
+              <p className="text-white/25 text-[13px] md:text-[14px] font-light leading-[1.9] max-w-sm mt-5" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
                 상품만 등록하세요. 팔로워 10만+ AI 인플루언서가<br />영상 제작부터 판매까지 전부 자동으로.
               </p>
-              <div className="flex items-center gap-5 mt-8" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000">
+              <div className="flex items-center gap-4 mt-8" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000">
                 <Link href="/create" className="hero-btn hero-btn-primary">시작하기</Link>
                 <button onClick={() => setModal(featured)} className="hero-btn hero-btn-ghost">
                   <div className="play-circle"><svg width="10" height="12" viewBox="0 0 10 12" fill="white"><polygon points="1,0 10,6 1,12" /></svg></div>
