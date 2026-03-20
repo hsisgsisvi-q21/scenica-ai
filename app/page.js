@@ -10,13 +10,13 @@ const VIDEOS = [
   { id: 'LygFajnhLFY', title: 'Street Fashion Film', creator: 'MISO', cat: 'fashion', views: '512K' },
   { id: 'rxWNmzQpW2c', title: 'Morning Routine', creator: 'HANA', cat: 'lifestyle', views: '267K' },
   { id: 'RPmqjTwdVP8', title: 'Product Showcase', creator: 'RINA', cat: 'commerce', views: '183K' },
-  { id: 'ttR0eoHz9Bg', title: 'Brand Campaign', creator: 'YUNA', cat: 'commerce', views: '445K' },
+  { id: 'VU52Kx2AXL8', title: 'Brand Campaign', creator: 'YUNA', cat: 'commerce', views: '445K' },
   { id: 'LygFajnhLFY', title: 'Lookbook SS26', creator: 'HANA', cat: 'fashion', views: '394K' },
   { id: 'rxWNmzQpW2c', title: 'Cafe Vlog', creator: 'RINA', cat: 'lifestyle', views: '221K' },
   { id: 'YFU4erbddog', title: 'Cosmetics Editorial', creator: 'MISO', cat: 'beauty', views: '678K' },
   { id: 'RPmqjTwdVP8', title: 'Unboxing Haul', creator: 'YUNA', cat: 'commerce', views: '156K' },
   { id: 'VU52Kx2AXL8', title: 'Cinematic Portrait', creator: 'MISO', cat: 'cinematic', views: '733K' },
-  { id: 'ttR0eoHz9Bg', title: 'Summer Collection', creator: 'HANA', cat: 'fashion', views: '289K' },
+  { id: 'LygFajnhLFY', title: 'Summer Collection', creator: 'HANA', cat: 'fashion', views: '289K' },
 ];
 
 const CATS = [
@@ -159,31 +159,29 @@ export default function Home() {
   // 20 unique looks from 3 best videos — each crop/zoom is radically different
   // YFU4erbddog = face with phone (bright, warm)
   // LygFajnhLFY = street fashion (colorful, vibrant)
-  // ttR0eoHz9Bg = brand campaign (warm lighting)
   const A = 'https://img.youtube.com/vi/YFU4erbddog/maxresdefault.jpg';
   const B = 'https://img.youtube.com/vi/LygFajnhLFY/maxresdefault.jpg';
-  const C = 'https://img.youtube.com/vi/ttR0eoHz9Bg/maxresdefault.jpg';
 
   const HERO_FRAMES = [
     { src: A, pos: '50% 20%', scale: '1.05' },
     { src: B, pos: '30% 10%', scale: '1.12' },
-    { src: C, pos: '50% 25%', scale: '1.03' },
-    { src: A, pos: '70% 35%', scale: '1.18' },
-    { src: B, pos: '60% 30%', scale: '1.06' },
-    { src: C, pos: '35% 15%', scale: '1.14' },
-    { src: A, pos: '40% 10%', scale: '1.08' },
+    { src: A, pos: '65% 35%', scale: '1.03' },
+    { src: B, pos: '70% 30%', scale: '1.18' },
+    { src: A, pos: '40% 15%', scale: '1.06' },
+    { src: B, pos: '35% 15%', scale: '1.14' },
+    { src: A, pos: '55% 10%', scale: '1.08' },
     { src: B, pos: '50% 40%', scale: '1.04' },
-    { src: C, pos: '65% 20%', scale: '1.1' },
-    { src: A, pos: '55% 30%', scale: '1.15' },
-    { src: B, pos: '40% 20%', scale: '1.09' },
-    { src: C, pos: '50% 35%', scale: '1.06' },
-    { src: A, pos: '35% 25%', scale: '1.12' },
+    { src: A, pos: '35% 30%', scale: '1.1' },
+    { src: B, pos: '60% 20%', scale: '1.15' },
+    { src: A, pos: '60% 25%', scale: '1.09' },
+    { src: B, pos: '45% 30%', scale: '1.06' },
+    { src: A, pos: '45% 40%', scale: '1.12' },
     { src: B, pos: '70% 15%', scale: '1.07' },
-    { src: C, pos: '40% 30%', scale: '1.16' },
-    { src: A, pos: '60% 15%', scale: '1.04' },
-    { src: B, pos: '45% 25%', scale: '1.13' },
-    { src: C, pos: '55% 10%', scale: '1.08' },
-    { src: A, pos: '45% 40%', scale: '1.1' },
+    { src: A, pos: '30% 20%', scale: '1.16' },
+    { src: B, pos: '55% 25%', scale: '1.04' },
+    { src: A, pos: '50% 35%', scale: '1.13' },
+    { src: B, pos: '40% 10%', scale: '1.08' },
+    { src: A, pos: '70% 15%', scale: '1.1' },
     { src: B, pos: '55% 35%', scale: '1.05' },
   ];
 
