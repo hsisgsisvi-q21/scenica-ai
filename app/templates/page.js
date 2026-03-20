@@ -4,18 +4,19 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 const YT = (id) => `https://img.youtube.com/vi/${id}/hq720.jpg`;
+const YT_FB = (id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
 const T = [
   { id:'YFU4erbddog', n:'뷰티 리뷰', c:'beauty', d:'30s', desc:'코스메틱 언박싱 + 사용 후기' },
   { id:'LygFajnhLFY', n:'패션 룩북', c:'fashion', d:'45s', desc:'시즌별 스타일링 숏폼' },
   { id:'rxWNmzQpW2c', n:'라이프 브이로그', c:'lifestyle', d:'60s', desc:'일상 속 자연스러운 노출' },
   { id:'RPmqjTwdVP8', n:'상품 쇼케이스', c:'commerce', d:'15s', desc:'디테일 클로즈업 시네마틱' },
-  { id:'YFU4erbddog', n:'브랜드 캠페인', c:'brand', d:'30s', desc:'브랜드 감성 숏폼 광고' },
+  { id:'ttR0eoHz9Bg', n:'브랜드 캠페인', c:'brand', d:'30s', desc:'브랜드 감성 숏폼 광고' },
   { id:'VU52Kx2AXL8', n:'시네마틱 무드', c:'cinematic', d:'45s', desc:'영화 같은 브랜드 필름' },
   { id:'wMdSqpTGxJo', n:'드리미 비주얼', c:'cinematic', d:'45s', desc:'몽환적 시네마틱 비주얼' },
   { id:'LygFajnhLFY', n:'스트릿 스냅', c:'fashion', d:'15s', desc:'거리 촬영 숏폼' },
   { id:'rxWNmzQpW2c', n:'카페 브이로그', c:'lifestyle', d:'60s', desc:'카페 제품 사용 일상' },
   { id:'RPmqjTwdVP8', n:'언박싱 하울', c:'commerce', d:'30s', desc:'다수 제품 동시 언박싱' },
-  { id:'YFU4erbddog', n:'프로모션 릴스', c:'commerce', d:'15s', desc:'할인·이벤트 고지' },
+  { id:'ttR0eoHz9Bg', n:'프로모션 릴스', c:'commerce', d:'15s', desc:'할인·이벤트 고지' },
   { id:'VU52Kx2AXL8', n:'나이트 무드', c:'cinematic', d:'30s', desc:'밤 분위기 시네마틱' },
 ];
 
@@ -59,7 +60,7 @@ export default function TemplatesPage() {
             <Link href="/create" key={`${t.id}-${i}`} data-aos="fade-up" data-aos-delay={Math.min(i * 50, 300)}>
               <div className="tmpl-card group">
                 <div className="aspect-video relative overflow-hidden">
-                  <img src={YT(t.id)} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-900 pointer-events-none" loading="lazy" />
+                  <img src={YT(t.id)} onError={(e)=>{e.target.src=YT_FB(t.id)}} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-900 pointer-events-none" loading="lazy" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <div className="absolute top-3 right-3 px-2 py-0.5 rounded bg-black/40 backdrop-blur-sm">
                     <span className="sans text-[9px] text-white/50">{t.d}</span>
