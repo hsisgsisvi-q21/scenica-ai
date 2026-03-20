@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 
 /* ═══ Data ═══ */
@@ -26,7 +26,7 @@ const CATS = [
 ];
 
 const YT = (id) => `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
-const EMBED = (id) => `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&showinfo=0&modestbranding=1&iv_load_policy=3&cc_load_policy=0&rel=0&playsinline=1&disablekb=1&fs=0`;
+const EMBED = (id) => `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&showinfo=0&modestbranding=1&iv_load_policy=3&cc_load_policy=0&rel=0&playsinline=1&disablekb=1&fs=0&enablejsapi=1`;
 
 /* ═══ AOS ═══ */
 function useAOS() {
@@ -52,6 +52,9 @@ function useAOS() {
 
 /* ═══ Modal ═══ */
 function Modal({ video, onClose }) {
+  const iframeRef = useRef(null);
+  const [muted, setMuted] = useState(true);
+
   useEffect(() => {
     const h = (e) => e.key === 'Escape' && onClose();
     document.addEventListener('keydown', h);
@@ -59,13 +62,34 @@ function Modal({ video, onClose }) {
     return () => { document.removeEventListener('keydown', h); document.body.style.overflow = ''; };
   }, [onClose]);
 
+  const toggleMute = () => {
+    const iframe = iframeRef.current;
+    if (iframe) {
+      const cmd = muted ? 'unMute' : 'mute';
+      iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: cmd, args: '' }), '*');
+      setMuted(!muted);
+    }
+  };
+
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal-video-wrap" onClick={(e) => e.stopPropagation()}>
-        <iframe src={EMBED(video.id)} allow="autoplay; encrypted-media" allowFullScreen tabIndex="-1" />
+        <iframe ref={iframeRef} src={EMBED(video.id)} allow="autoplay; encrypted-media" allowFullScreen tabIndex="-1" />
         <div className="modal-blocker-top" />
         <div className="modal-blocker-bottom" />
         <div className="modal-click-block" />
+
+        {/* Mute/Unmute button */}
+        <button
+          onClick={toggleMute}
+          className="absolute bottom-5 right-5 z-10 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center cursor-pointer hover:bg-black/70 transition-all"
+        >
+          {muted ? (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" strokeWidth="1.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+          ) : (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" strokeWidth="1.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
+          )}
+        </button>
       </div>
       <button className="modal-close" onClick={onClose}>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg>
