@@ -3,8 +3,12 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-const YT = (id) => `https://img.youtube.com/vi/${id}/hq720.jpg`;
-const YT_FB = (id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+const CUSTOM_THUMB = { 'ttR0eoHz9Bg': ['/brand1.png', '/brand2.png', '/brand3.png'] };
+const YT = (id, idx = 0) => {
+  if (CUSTOM_THUMB[id]) return CUSTOM_THUMB[id][idx % CUSTOM_THUMB[id].length];
+  return \`https://img.youtube.com/vi/\${id}/hq720.jpg\`;
+};
+const YT_FB = (id) => \`https://img.youtube.com/vi/\${id}/hqdefault.jpg\`;
 const DATA = [
   { name:'YUNA', cat:'Beauty', f:'12.4만', eng:'4.2%', vids:['YFU4erbddog','wMdSqpTGxJo','VU52Kx2AXL8'], desc:'자연스러운 리뷰와 감성적인 룩북으로 팔로워와 소통합니다.' },
   { name:'MISO', cat:'Fashion', f:'8.7만', eng:'3.8%', vids:['LygFajnhLFY','YFU4erbddog','RPmqjTwdVP8'], desc:'스트릿부터 하이엔드까지. 트렌디한 스타일링 콘텐츠를 제작합니다.' },
