@@ -3,8 +3,12 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-const YT = (id) => `https://img.youtube.com/vi/${id}/hq720.jpg`;
-const YT_FB = (id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+const CUSTOM_THUMB = { 'ttR0eoHz9Bg': ['/brand1.png', '/brand2.png', '/brand3.png'] };
+const YT = (id, idx = 0) => {
+  if (CUSTOM_THUMB[id]) return CUSTOM_THUMB[id][idx % CUSTOM_THUMB[id].length];
+  return \`https://img.youtube.com/vi/\${id}/hq720.jpg\`;
+};
+const YT_FB = (id) => \`https://img.youtube.com/vi/\${id}/hqdefault.jpg\`;
 const T = [
   { id:'YFU4erbddog', n:'뷰티 리뷰', c:'beauty', d:'30s', desc:'코스메틱 언박싱 + 사용 후기' },
   { id:'LygFajnhLFY', n:'패션 룩북', c:'fashion', d:'45s', desc:'시즌별 스타일링 숏폼' },
@@ -60,7 +64,7 @@ export default function TemplatesPage() {
             <Link href="/create" key={`${t.id}-${i}`} data-aos="fade-up" data-aos-delay={Math.min(i * 50, 300)}>
               <div className="tmpl-card group">
                 <div className="aspect-video relative overflow-hidden">
-                  <img src={YT(t.id)} onError={(e)=>{e.target.src=YT_FB(t.id)}} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-900 pointer-events-none" loading="lazy" />
+                  <img src={YT(t.id, i)} onError={(e)=>{e.target.src=YT_FB(t.id)}} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-900 pointer-events-none" loading="lazy" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <div className="absolute top-3 right-3 px-2 py-0.5 rounded bg-black/40 backdrop-blur-sm">
                     <span className="sans text-[9px] text-white/50">{t.d}</span>
