@@ -159,49 +159,64 @@ export default function Home() {
   return (
     <>
       {/* ════════════════════════════════════
-          HERO — Full cinematic, parallax
+          HERO — Luxurious, cinematic
           ════════════════════════════════════ */}
       <section className="relative overflow-hidden">
-        <div className="relative w-full" style={{ height: 'max(72vh, 620px)' }}>
+        <div className="relative w-full" style={{ height: 'max(78vh, 660px)' }}>
           {/* Parallax BG */}
           <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute w-full" style={{ height: '130%', top: '-15%', transform: `translateY(${py}px)` }}>
+            <div className="absolute w-full" style={{ height: '125%', top: '-12%', transform: `translateY(${py}px)` }}>
               <img src={YT(hero.id)} alt="" className="w-full h-full object-cover" style={{ objectPosition: '50% 18%' }} />
             </div>
           </div>
 
-          {/* Multi-layer overlays for depth */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/40" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/25 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent" style={{ height: '30%' }} />
+          {/* Cinematic overlays — multiple layers for depth */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/35 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent" style={{ height: '25%' }} />
+          <div className="absolute inset-0 bg-black/10" />
 
-          {/* Content — bottom left, generous whitespace */}
+          {/* Decorative vertical line */}
+          <div className="absolute left-[28px] md:left-[48px] lg:left-[64px] top-[20%] bottom-[30%] w-[0.5px] bg-gradient-to-b from-transparent via-white/[.06] to-transparent" data-aos="fade-up" data-aos-duration="1500" />
+
+          {/* Content */}
           <div className="absolute inset-0 flex items-end">
-            <div className="page-container w-full pb-20 md:pb-28">
+            <div className="page-container w-full pb-20 md:pb-28 lg:pb-32">
 
-              <div className="hero-badge mb-7" data-aos="fade-up" data-aos-duration="700">
-                <span className="w-[4px] h-[4px] rounded-full bg-emerald-400 animate-pulse" />
-                <span className="sans">Early Access Open</span>
+              {/* Eyebrow */}
+              <div className="flex items-center gap-4 mb-8" data-aos="fade-up" data-aos-duration="800">
+                <div className="w-8 h-[0.5px] bg-white/15" />
+                <div className="hero-badge">
+                  <span className="w-[4px] h-[4px] rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="sans">Early Access Open</span>
+                </div>
               </div>
 
-              <h1
-                className="serif text-[34px] sm:text-[46px] md:text-[60px] lg:text-[74px] font-light text-white leading-[1.06] max-w-2xl"
-                style={{ letterSpacing: '-0.035em' }}
-                data-aos="fade-up" data-aos-delay="80" data-aos-duration="1100"
-              >
-                AI 인플루언서가<br />직접 팔아줍니다
-              </h1>
+              {/* Title — mixed weight for luxury feel */}
+              <div data-aos="fade-up" data-aos-delay="100" data-aos-duration="1200">
+                <div className="sans text-[10px] text-white/[.15] uppercase tracking-[.3em] mb-4">AI Influencer Commerce Platform</div>
+                <h1
+                  className="serif text-[36px] sm:text-[48px] md:text-[62px] lg:text-[76px] font-light text-white leading-[1.04] max-w-2xl"
+                  style={{ letterSpacing: '-0.035em' }}
+                >
+                  AI 인플루언서가<br />
+                  <span className="italic text-white/80">직접</span> 팔아줍니다
+                </h1>
+              </div>
 
-              <p
-                className="text-white/22 text-[13px] font-light leading-[1.9] max-w-sm mt-5"
-                data-aos="fade-up" data-aos-delay="160" data-aos-duration="1100"
-              >
-                상품만 등록하세요. 팔로워 10만+ AI 인플루언서가<br />
-                영상 제작부터 판매까지 전부 자동으로.
-              </p>
+              {/* Description with left border */}
+              <div className="flex items-stretch gap-4 mt-8 max-w-md" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1200">
+                <div className="w-[0.5px] bg-white/[.08] shrink-0" />
+                <p className="text-white/20 text-[12px] md:text-[13px] font-light leading-[2] pl-1">
+                  상품만 등록하세요. 팔로워 10만+ AI 인플루언서가<br />
+                  영상 제작부터 판매까지 전부 자동으로.
+                </p>
+              </div>
 
-              <div className="flex items-center gap-4 mt-9" data-aos="fade-up" data-aos-delay="240" data-aos-duration="1100">
+              {/* Buttons */}
+              <div className="flex items-center gap-5 mt-10" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1200">
                 <Link href="/create" className="hero-btn hero-btn-primary">시작하기</Link>
+                <div className="w-[0.5px] h-5 bg-white/[.06]" />
                 <button onClick={() => setModal(hero)} className="hero-btn hero-btn-ghost">
                   <div className="play-circle">
                     <svg width="9" height="11" viewBox="0 0 9 11" fill="white"><polygon points="1,0 9,5.5 1,11"/></svg>
@@ -212,27 +227,29 @@ export default function Home() {
 
             </div>
           </div>
+
+          {/* Bottom fade for clean transition */}
+          <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-white/[.03] via-white/[.06] to-white/[.03]" />
         </div>
 
-        {/* Stat strip — breathing room */}
-        <div className="sep" />
-        <div className="page-container py-1">
-          <div className="stat-row" data-aos="fade-up" data-aos-delay="80" data-aos-duration="800">
+        {/* Stats — refined, more spacing */}
+        <div className="page-container py-2">
+          <div className="stat-row" data-aos="fade-up" data-aos-delay="100" data-aos-duration="900">
             {[
               { v: '130', u: '건', l: 'Orders' },
               { v: '3.2', u: '억', l: 'Revenue' },
               { v: '9', u: 'x', l: 'Conversion' },
               { v: '97', u: '%', l: 'Cost Saved' },
               { v: '40', u: '만+', l: 'Followers' },
-            ].map((s) => (
-              <div key={s.l} className="stat-item">
-                <span className="stat-num">{s.v}<span className="text-[15px]">{s.u}</span></span>
+            ].map((s, i) => (
+              <div key={s.l} className="stat-item group cursor-default">
+                <span className="stat-num group-hover:text-white/50 transition-colors duration-700">{s.v}<span className="text-[14px]">{s.u}</span></span>
                 <span className="stat-label">{s.l}</span>
               </div>
             ))}
           </div>
         </div>
-        <div className="sep" />
+        <div className="h-[0.5px] bg-gradient-to-r from-transparent via-white/[.04] to-transparent" />
       </section>
 
       {/* ════════════════════════════════════
