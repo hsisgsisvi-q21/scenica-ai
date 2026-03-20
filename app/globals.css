@@ -75,14 +75,14 @@ img,video,iframe{-webkit-user-drag:none;user-select:none}
 }
 .modal-video-wrap iframe{
   position:absolute;
-  top:-48px;left:0;
+  top:-70px;left:0;
   width:100%;
-  height:calc(100% + 96px);
+  height:calc(100% + 140px);
   border:none;
 }
 /* Thin gradient strips to cover YouTube top bar and bottom bar */
-.modal-blocker-top{position:absolute;top:0;left:0;right:0;height:4px;z-index:3;background:#000;pointer-events:auto}
-.modal-blocker-bottom{position:absolute;bottom:0;left:0;right:0;height:4px;z-index:3;background:#000;pointer-events:auto}
+.modal-blocker-top{position:absolute;top:0;left:0;right:0;height:8px;z-index:3;background:#000;pointer-events:auto}
+.modal-blocker-bottom{position:absolute;bottom:0;left:0;right:0;height:8px;z-index:3;background:#000;pointer-events:auto}
 /* Transparent click blocker over entire video to prevent YouTube interaction */
 .modal-click-block{position:absolute;inset:0;z-index:2;cursor:default}
 .modal-close{position:fixed;top:28px;right:28px;z-index:110;width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s}
