@@ -5,9 +5,9 @@ import Link from 'next/link';
 
 const YT = (id) => `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
 const DATA = [
-  { name:'YUNA', cat:'Beauty', f:'12.4만', eng:'4.2%', vids:['YFU4erbddog','ttR0eoHz9Bg','VU52Kx2AXL8'], desc:'자연스러운 리뷰와 감성적인 룩북으로 팔로워와 소통합니다.' },
+  { name:'YUNA', cat:'Beauty', f:'12.4만', eng:'4.2%', vids:['YFU4erbddog','LygFajnhLFY','VU52Kx2AXL8'], desc:'자연스러운 리뷰와 감성적인 룩북으로 팔로워와 소통합니다.' },
   { name:'MISO', cat:'Fashion', f:'8.7만', eng:'3.8%', vids:['LygFajnhLFY','YFU4erbddog','RPmqjTwdVP8'], desc:'스트릿부터 하이엔드까지. 트렌디한 스타일링 콘텐츠를 제작합니다.' },
-  { name:'HANA', cat:'Lifestyle', f:'11.2만', eng:'4.5%', vids:['rxWNmzQpW2c','LygFajnhLFY','ttR0eoHz9Bg'], desc:'데일리 라이프스타일, 카페 브이로그, 인테리어까지.' },
+  { name:'HANA', cat:'Lifestyle', f:'11.2만', eng:'4.5%', vids:['rxWNmzQpW2c','LygFajnhLFY','LygFajnhLFY'], desc:'데일리 라이프스타일, 카페 브이로그, 인테리어까지.' },
   { name:'RINA', cat:'Food & Living', f:'9.8만', eng:'3.9%', vids:['RPmqjTwdVP8','rxWNmzQpW2c','VU52Kx2AXL8'], desc:'푸드 리뷰, 홈쿠킹, 리빙 소품. 따뜻한 톤으로 구매 전환을 이끕니다.' },
 ];
 
