@@ -154,22 +154,16 @@ export default function Home() {
     }, 30);
   };
 
-  const hero = VIDEOS[1]; // Night City Mood
+  const hero = VIDEOS[1];
 
-  // All LUOKAI video thumbnails - maxresdefault always exists
+  // Only HD thumbnails - maxresdefault always works for these videos
   const HERO_FRAMES = [
-    { src: `https://img.youtube.com/vi/YFU4erbddog/maxresdefault.jpg`, pos: '50% 20%' },
-    { src: `https://img.youtube.com/vi/VU52Kx2AXL8/maxresdefault.jpg`, pos: '50% 25%' },
-    { src: `https://img.youtube.com/vi/ttR0eoHz9Bg/maxresdefault.jpg`, pos: '50% 30%' },
-    { src: `https://img.youtube.com/vi/LygFajnhLFY/maxresdefault.jpg`, pos: '50% 20%' },
-    { src: `https://img.youtube.com/vi/rxWNmzQpW2c/maxresdefault.jpg`, pos: '50% 25%' },
-    { src: `https://img.youtube.com/vi/RPmqjTwdVP8/maxresdefault.jpg`, pos: '50% 30%' },
-    { src: `https://img.youtube.com/vi/YFU4erbddog/sddefault.jpg`, pos: '50% 15%' },
-    { src: `https://img.youtube.com/vi/VU52Kx2AXL8/sddefault.jpg`, pos: '50% 20%' },
-    { src: `https://img.youtube.com/vi/ttR0eoHz9Bg/sddefault.jpg`, pos: '50% 25%' },
-    { src: `https://img.youtube.com/vi/LygFajnhLFY/sddefault.jpg`, pos: '50% 20%' },
-    { src: `https://img.youtube.com/vi/rxWNmzQpW2c/sddefault.jpg`, pos: '50% 30%' },
-    { src: `https://img.youtube.com/vi/RPmqjTwdVP8/sddefault.jpg`, pos: '50% 25%' },
+    { src: `https://img.youtube.com/vi/YFU4erbddog/maxresdefault.jpg`, pos: '50% 20%', scale: '1.05' },
+    { src: `https://img.youtube.com/vi/VU52Kx2AXL8/maxresdefault.jpg`, pos: '50% 30%', scale: '1.08' },
+    { src: `https://img.youtube.com/vi/ttR0eoHz9Bg/maxresdefault.jpg`, pos: '50% 25%', scale: '1.03' },
+    { src: `https://img.youtube.com/vi/LygFajnhLFY/maxresdefault.jpg`, pos: '50% 15%', scale: '1.06' },
+    { src: `https://img.youtube.com/vi/rxWNmzQpW2c/maxresdefault.jpg`, pos: '50% 20%', scale: '1.1' },
+    { src: `https://img.youtube.com/vi/RPmqjTwdVP8/maxresdefault.jpg`, pos: '50% 30%', scale: '1.04' },
   ];
 
   const [heroIdx, setHeroIdx] = useState(0);
@@ -177,7 +171,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setInterval(() => {
       setHeroIdx((prev) => (prev + 1) % HERO_FRAMES.length);
-    }, 1400); // 1.4초마다 전환
+    }, 1400);
     return () => clearInterval(timer);
   }, []);
 
@@ -196,12 +190,13 @@ export default function Home() {
                   key={i}
                   src={frame.src}
                   alt=""
-                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[800ms] ease-in-out"
+                  className="absolute inset-0 w-full h-full object-cover"
                   style={{
                     objectPosition: frame.pos,
                     opacity: heroIdx === i ? 1 : 0,
+                    transform: heroIdx === i ? `scale(${frame.scale})` : 'scale(1)',
+                    transition: 'opacity 0.6s ease-in-out, transform 1.4s ease-out',
                   }}
-                  loading={i < 2 ? 'eager' : 'lazy'}
                 />
               ))}
             </div>
