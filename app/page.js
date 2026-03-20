@@ -25,8 +25,16 @@ const CATS = [
   { key: 'lifestyle', label: 'Lifestyle' }, { key: 'commerce', label: 'Commerce' },
 ];
 
-// Smart thumbnail - hq720 with fallback to hqdefault (guaranteed for ALL videos)
-const YT = (id) => `https://img.youtube.com/vi/${id}/hq720.jpg`;
+// Custom thumbnails for videos where YouTube doesn't provide images
+const CUSTOM_THUMB = {
+  'ttR0eoHz9Bg': ['/brand1.png', '/brand2.png', '/brand3.png'],
+};
+
+// Smart thumbnail - custom first, then YouTube
+const YT = (id, idx = 0) => {
+  if (CUSTOM_THUMB[id]) return CUSTOM_THUMB[id][idx % CUSTOM_THUMB[id].length];
+  return `https://img.youtube.com/vi/${id}/hq720.jpg`;
+};
 const YT_FALLBACK = (id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
 const EMBED = (id) => `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&showinfo=0&modestbranding=1&iv_load_policy=3&cc_load_policy=0&rel=0&playsinline=1&disablekb=1&fs=0&enablejsapi=1`;
 
@@ -108,7 +116,7 @@ function Modal({ video, onClose }) {
 function Card({ video, i, onClick }) {
   return (
     <div className="vcard" onClick={() => onClick(video)} data-aos="fade-up" data-aos-delay={Math.min(i * 50, 300)} data-aos-duration="900">
-      <img src={YT(video.id)} onError={(e)=>{e.target.src=YT_FALLBACK(video.id)}} alt="" className="thumb aspect-video" loading="lazy" />
+      <img src={YT(video.id, i)} onError={(e)=>{e.target.src=YT_FALLBACK(video.id)}} alt="" className="thumb aspect-video" loading="lazy" />
       <div className="card-overlay" />
       <div className="play-icon">
         <svg width="13" height="15" viewBox="0 0 13 15" fill="#000"><polygon points="1.5,0 13,7.5 1.5,15"/></svg>
@@ -158,17 +166,17 @@ export default function Home() {
 
   const hero = VIDEOS[1];
 
-  // 10 frames — ttR0eoHz9Bg uses hqdefault since hq720 doesn't exist for it
+  // 10 frames — brand1/2/3.png are custom screenshots from ttR0eoHz9Bg
   const HERO_FRAMES = [
     { src: `https://img.youtube.com/vi/YFU4erbddog/hq720.jpg`, pos: '50% 20%', scale: '1.05' },
-    { src: `https://img.youtube.com/vi/wMdSqpTGxJo/hq720.jpg`, pos: '50% 25%', scale: '1.08' },
+    { src: `/brand1.png`, pos: '50% 25%', scale: '1.08' },
     { src: `https://img.youtube.com/vi/LygFajnhLFY/hq720.jpg`, pos: '45% 15%', scale: '1.06' },
-    { src: `https://img.youtube.com/vi/ttR0eoHz9Bg/hqdefault.jpg`, pos: '50% 25%', scale: '1.04' },
+    { src: `/brand2.png`, pos: '50% 30%', scale: '1.04' },
     { src: `https://img.youtube.com/vi/VU52Kx2AXL8/hq720.jpg`, pos: '50% 30%', scale: '1.07' },
-    { src: `https://img.youtube.com/vi/rxWNmzQpW2c/hq720.jpg`, pos: '50% 20%', scale: '1.1' },
-    { src: `https://img.youtube.com/vi/RPmqjTwdVP8/hq720.jpg`, pos: '50% 25%', scale: '1.05' },
-    { src: `https://img.youtube.com/vi/wMdSqpTGxJo/hq720.jpg`, pos: '60% 20%', scale: '1.12' },
-    { src: `https://img.youtube.com/vi/ttR0eoHz9Bg/hqdefault.jpg`, pos: '55% 30%', scale: '1.15' },
+    { src: `https://img.youtube.com/vi/wMdSqpTGxJo/hq720.jpg`, pos: '50% 20%', scale: '1.1' },
+    { src: `/brand3.png`, pos: '50% 25%', scale: '1.05' },
+    { src: `https://img.youtube.com/vi/rxWNmzQpW2c/hq720.jpg`, pos: '60% 20%', scale: '1.12' },
+    { src: `https://img.youtube.com/vi/RPmqjTwdVP8/hq720.jpg`, pos: '55% 30%', scale: '1.15' },
     { src: `https://img.youtube.com/vi/YFU4erbddog/hq720.jpg`, pos: '60% 30%', scale: '1.09' },
   ];
 
