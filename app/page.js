@@ -156,16 +156,20 @@ export default function Home() {
 
   const hero = VIDEOS[1]; // Night City Mood
 
-  // Multiple frame cuts from different videos (default, 25%, 50%, 75% timestamps)
+  // All LUOKAI video thumbnails - maxresdefault always exists
   const HERO_FRAMES = [
-    { src: `https://img.youtube.com/vi/YFU4erbddog/maxres1.jpg`, pos: '50% 20%' },
+    { src: `https://img.youtube.com/vi/YFU4erbddog/maxresdefault.jpg`, pos: '50% 20%' },
+    { src: `https://img.youtube.com/vi/VU52Kx2AXL8/maxresdefault.jpg`, pos: '50% 25%' },
     { src: `https://img.youtube.com/vi/ttR0eoHz9Bg/maxresdefault.jpg`, pos: '50% 30%' },
-    { src: `https://img.youtube.com/vi/VU52Kx2AXL8/maxres2.jpg`, pos: '50% 25%' },
-    { src: `https://img.youtube.com/vi/LygFajnhLFY/maxres1.jpg`, pos: '50% 20%' },
-    { src: `https://img.youtube.com/vi/YFU4erbddog/maxres3.jpg`, pos: '50% 25%' },
-    { src: `https://img.youtube.com/vi/rxWNmzQpW2c/maxres2.jpg`, pos: '50% 30%' },
-    { src: `https://img.youtube.com/vi/ttR0eoHz9Bg/maxres1.jpg`, pos: '50% 25%' },
-    { src: `https://img.youtube.com/vi/RPmqjTwdVP8/maxres2.jpg`, pos: '50% 30%' },
+    { src: `https://img.youtube.com/vi/LygFajnhLFY/maxresdefault.jpg`, pos: '50% 20%' },
+    { src: `https://img.youtube.com/vi/rxWNmzQpW2c/maxresdefault.jpg`, pos: '50% 25%' },
+    { src: `https://img.youtube.com/vi/RPmqjTwdVP8/maxresdefault.jpg`, pos: '50% 30%' },
+    { src: `https://img.youtube.com/vi/YFU4erbddog/sddefault.jpg`, pos: '50% 15%' },
+    { src: `https://img.youtube.com/vi/VU52Kx2AXL8/sddefault.jpg`, pos: '50% 20%' },
+    { src: `https://img.youtube.com/vi/ttR0eoHz9Bg/sddefault.jpg`, pos: '50% 25%' },
+    { src: `https://img.youtube.com/vi/LygFajnhLFY/sddefault.jpg`, pos: '50% 20%' },
+    { src: `https://img.youtube.com/vi/rxWNmzQpW2c/sddefault.jpg`, pos: '50% 30%' },
+    { src: `https://img.youtube.com/vi/RPmqjTwdVP8/sddefault.jpg`, pos: '50% 25%' },
   ];
 
   const [heroIdx, setHeroIdx] = useState(0);
@@ -173,7 +177,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setInterval(() => {
       setHeroIdx((prev) => (prev + 1) % HERO_FRAMES.length);
-    }, 5000); // 5초마다 전환
+    }, 1400); // 1.4초마다 전환
     return () => clearInterval(timer);
   }, []);
 
@@ -192,7 +196,7 @@ export default function Home() {
                   key={i}
                   src={frame.src}
                   alt=""
-                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[2000ms] ease-in-out"
+                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[800ms] ease-in-out"
                   style={{
                     objectPosition: frame.pos,
                     opacity: heroIdx === i ? 1 : 0,
