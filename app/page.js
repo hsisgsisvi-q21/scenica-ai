@@ -156,28 +156,35 @@ export default function Home() {
 
   const hero = VIDEOS[1];
 
-  // 20 frames — same 6 videos but different crops, positions, zoom = all look different
+  // 20 unique looks from 3 best videos — each crop/zoom is radically different
+  // YFU4erbddog = face with phone (bright, warm)
+  // LygFajnhLFY = street fashion (colorful, vibrant)
+  // ttR0eoHz9Bg = brand campaign (warm lighting)
+  const A = 'https://img.youtube.com/vi/YFU4erbddog/maxresdefault.jpg';
+  const B = 'https://img.youtube.com/vi/LygFajnhLFY/maxresdefault.jpg';
+  const C = 'https://img.youtube.com/vi/ttR0eoHz9Bg/maxresdefault.jpg';
+
   const HERO_FRAMES = [
-    { src: `https://img.youtube.com/vi/YFU4erbddog/maxresdefault.jpg`, pos: '50% 20%', scale: '1.05' },
-    { src: `https://img.youtube.com/vi/LygFajnhLFY/maxresdefault.jpg`, pos: '40% 15%', scale: '1.08' },
-    { src: `https://img.youtube.com/vi/ttR0eoHz9Bg/maxresdefault.jpg`, pos: '50% 25%', scale: '1.03' },
-    { src: `https://img.youtube.com/vi/YFU4erbddog/maxresdefault.jpg`, pos: '60% 30%', scale: '1.12' },
-    { src: `https://img.youtube.com/vi/VU52Kx2AXL8/maxresdefault.jpg`, pos: '45% 20%', scale: '1.06' },
-    { src: `https://img.youtube.com/vi/rxWNmzQpW2c/maxresdefault.jpg`, pos: '50% 15%', scale: '1.04' },
-    { src: `https://img.youtube.com/vi/RPmqjTwdVP8/maxresdefault.jpg`, pos: '55% 25%', scale: '1.07' },
-    { src: `https://img.youtube.com/vi/LygFajnhLFY/maxresdefault.jpg`, pos: '60% 25%', scale: '1.03' },
-    { src: `https://img.youtube.com/vi/ttR0eoHz9Bg/maxresdefault.jpg`, pos: '40% 35%', scale: '1.1' },
-    { src: `https://img.youtube.com/vi/YFU4erbddog/maxresdefault.jpg`, pos: '45% 15%', scale: '1.15' },
-    { src: `https://img.youtube.com/vi/VU52Kx2AXL8/maxresdefault.jpg`, pos: '55% 30%', scale: '1.04' },
-    { src: `https://img.youtube.com/vi/rxWNmzQpW2c/maxresdefault.jpg`, pos: '40% 25%', scale: '1.08' },
-    { src: `https://img.youtube.com/vi/LygFajnhLFY/maxresdefault.jpg`, pos: '50% 35%', scale: '1.06' },
-    { src: `https://img.youtube.com/vi/RPmqjTwdVP8/maxresdefault.jpg`, pos: '45% 20%', scale: '1.09' },
-    { src: `https://img.youtube.com/vi/ttR0eoHz9Bg/maxresdefault.jpg`, pos: '55% 15%', scale: '1.05' },
-    { src: `https://img.youtube.com/vi/YFU4erbddog/maxresdefault.jpg`, pos: '55% 25%', scale: '1.07' },
-    { src: `https://img.youtube.com/vi/VU52Kx2AXL8/maxresdefault.jpg`, pos: '50% 15%', scale: '1.12' },
-    { src: `https://img.youtube.com/vi/rxWNmzQpW2c/maxresdefault.jpg`, pos: '60% 20%', scale: '1.05' },
-    { src: `https://img.youtube.com/vi/LygFajnhLFY/maxresdefault.jpg`, pos: '45% 20%', scale: '1.1' },
-    { src: `https://img.youtube.com/vi/RPmqjTwdVP8/maxresdefault.jpg`, pos: '50% 30%', scale: '1.03' },
+    { src: A, pos: '50% 20%', scale: '1.05' },
+    { src: B, pos: '30% 10%', scale: '1.12' },
+    { src: C, pos: '50% 25%', scale: '1.03' },
+    { src: A, pos: '70% 35%', scale: '1.18' },
+    { src: B, pos: '60% 30%', scale: '1.06' },
+    { src: C, pos: '35% 15%', scale: '1.14' },
+    { src: A, pos: '40% 10%', scale: '1.08' },
+    { src: B, pos: '50% 40%', scale: '1.04' },
+    { src: C, pos: '65% 20%', scale: '1.1' },
+    { src: A, pos: '55% 30%', scale: '1.15' },
+    { src: B, pos: '40% 20%', scale: '1.09' },
+    { src: C, pos: '50% 35%', scale: '1.06' },
+    { src: A, pos: '35% 25%', scale: '1.12' },
+    { src: B, pos: '70% 15%', scale: '1.07' },
+    { src: C, pos: '40% 30%', scale: '1.16' },
+    { src: A, pos: '60% 15%', scale: '1.04' },
+    { src: B, pos: '45% 25%', scale: '1.13' },
+    { src: C, pos: '55% 10%', scale: '1.08' },
+    { src: A, pos: '45% 40%', scale: '1.1' },
+    { src: B, pos: '55% 35%', scale: '1.05' },
   ];
 
   const [heroIdx, setHeroIdx] = useState(0);
