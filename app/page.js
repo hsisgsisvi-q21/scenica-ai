@@ -156,11 +156,28 @@ export default function Home() {
 
   const hero = VIDEOS[1];
 
-  // Only frames confirmed to look good
+  // 20 frames — same 6 videos but different crops, positions, zoom = all look different
   const HERO_FRAMES = [
     { src: `https://img.youtube.com/vi/YFU4erbddog/maxresdefault.jpg`, pos: '50% 20%', scale: '1.05' },
-    { src: `https://img.youtube.com/vi/LygFajnhLFY/maxresdefault.jpg`, pos: '50% 15%', scale: '1.06' },
+    { src: `https://img.youtube.com/vi/LygFajnhLFY/maxresdefault.jpg`, pos: '40% 15%', scale: '1.08' },
     { src: `https://img.youtube.com/vi/ttR0eoHz9Bg/maxresdefault.jpg`, pos: '50% 25%', scale: '1.03' },
+    { src: `https://img.youtube.com/vi/YFU4erbddog/maxresdefault.jpg`, pos: '60% 30%', scale: '1.12' },
+    { src: `https://img.youtube.com/vi/VU52Kx2AXL8/maxresdefault.jpg`, pos: '45% 20%', scale: '1.06' },
+    { src: `https://img.youtube.com/vi/rxWNmzQpW2c/maxresdefault.jpg`, pos: '50% 15%', scale: '1.04' },
+    { src: `https://img.youtube.com/vi/RPmqjTwdVP8/maxresdefault.jpg`, pos: '55% 25%', scale: '1.07' },
+    { src: `https://img.youtube.com/vi/LygFajnhLFY/maxresdefault.jpg`, pos: '60% 25%', scale: '1.03' },
+    { src: `https://img.youtube.com/vi/ttR0eoHz9Bg/maxresdefault.jpg`, pos: '40% 35%', scale: '1.1' },
+    { src: `https://img.youtube.com/vi/YFU4erbddog/maxresdefault.jpg`, pos: '45% 15%', scale: '1.15' },
+    { src: `https://img.youtube.com/vi/VU52Kx2AXL8/maxresdefault.jpg`, pos: '55% 30%', scale: '1.04' },
+    { src: `https://img.youtube.com/vi/rxWNmzQpW2c/maxresdefault.jpg`, pos: '40% 25%', scale: '1.08' },
+    { src: `https://img.youtube.com/vi/LygFajnhLFY/maxresdefault.jpg`, pos: '50% 35%', scale: '1.06' },
+    { src: `https://img.youtube.com/vi/RPmqjTwdVP8/maxresdefault.jpg`, pos: '45% 20%', scale: '1.09' },
+    { src: `https://img.youtube.com/vi/ttR0eoHz9Bg/maxresdefault.jpg`, pos: '55% 15%', scale: '1.05' },
+    { src: `https://img.youtube.com/vi/YFU4erbddog/maxresdefault.jpg`, pos: '55% 25%', scale: '1.07' },
+    { src: `https://img.youtube.com/vi/VU52Kx2AXL8/maxresdefault.jpg`, pos: '50% 15%', scale: '1.12' },
+    { src: `https://img.youtube.com/vi/rxWNmzQpW2c/maxresdefault.jpg`, pos: '60% 20%', scale: '1.05' },
+    { src: `https://img.youtube.com/vi/LygFajnhLFY/maxresdefault.jpg`, pos: '45% 20%', scale: '1.1' },
+    { src: `https://img.youtube.com/vi/RPmqjTwdVP8/maxresdefault.jpg`, pos: '50% 30%', scale: '1.03' },
   ];
 
   const [heroIdx, setHeroIdx] = useState(0);
@@ -168,7 +185,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setInterval(() => {
       setHeroIdx((prev) => (prev + 1) % HERO_FRAMES.length);
-    }, 1700);
+    }, 1900);
     return () => clearInterval(timer);
   }, []);
 
@@ -192,7 +209,8 @@ export default function Home() {
                     objectPosition: frame.pos,
                     opacity: heroIdx === i ? 1 : 0,
                     transform: heroIdx === i ? `scale(${frame.scale})` : 'scale(1)',
-                    transition: 'opacity 0.6s ease-in-out, transform 1.4s ease-out',
+                    filter: 'brightness(1.1) contrast(1.05)',
+                    transition: 'opacity 0.6s ease-in-out, transform 1.9s ease-out',
                   }}
                 />
               ))}
@@ -254,18 +272,15 @@ export default function Home() {
                 </button>
               </div>
 
-              {/* Slide indicators */}
-              <div className="flex items-center gap-2 mt-10" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">
-                {HERO_FRAMES.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setHeroIdx(i)}
-                    className="group cursor-pointer p-1"
-                  >
-                    <div className={`h-[2px] rounded-full transition-all duration-700 ${heroIdx === i ? 'w-6 bg-white/50' : 'w-2 bg-white/[.1] group-hover:bg-white/20'}`} />
-                  </button>
-                ))}
-                <span className="sans text-[9px] text-white/[.08] ml-3 tracking-[.1em]">
+              {/* Slide progress */}
+              <div className="flex items-center gap-4 mt-10" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">
+                <div className="w-24 h-[1.5px] bg-white/[.06] rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-white/30 rounded-full transition-all duration-500"
+                    style={{ width: `${((heroIdx + 1) / HERO_FRAMES.length) * 100}%` }}
+                  />
+                </div>
+                <span className="sans text-[9px] text-white/[.08] tracking-[.1em]">
                   {String(heroIdx + 1).padStart(2, '0')} / {String(HERO_FRAMES.length).padStart(2, '0')}
                 </span>
               </div>
