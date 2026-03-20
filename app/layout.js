@@ -2,8 +2,7 @@ import './globals.css';
 
 export const metadata = {
   title: 'Scenica AI — AI 인플루언서가 직접 팔아주는 숏폼 이커머스',
-  description: '팔로워 10만+ AI 인플루언서가 영상 제작부터 채널 게시, 판매까지. 셀러는 상품만 등록하세요. 월 3만원으로 시작.',
-  keywords: 'AI인플루언서, 숏폼커머스, AI영상, 소상공인, 이커머스, Scenica',
+  description: '팔로워 10만+ AI 인플루언서가 영상 제작부터 채널 게시, 판매까지. 셀러는 상품만 등록하세요.',
   openGraph: {
     title: 'Scenica AI — AI 인플루언서가 직접 팔아주는 숏폼 이커머스',
     description: '상품만 등록하면, AI 인플루언서가 만들고 띄우고 팔아줍니다',
