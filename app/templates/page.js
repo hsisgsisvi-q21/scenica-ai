@@ -9,13 +9,13 @@ const T = [
   { id:'LygFajnhLFY', n:'패션 룩북', c:'fashion', d:'45s', desc:'시즌별 스타일링 숏폼' },
   { id:'rxWNmzQpW2c', n:'라이프 브이로그', c:'lifestyle', d:'60s', desc:'일상 속 자연스러운 노출' },
   { id:'RPmqjTwdVP8', n:'상품 쇼케이스', c:'commerce', d:'15s', desc:'디테일 클로즈업 시네마틱' },
-  { id:'ttR0eoHz9Bg', n:'브랜드 캠페인', c:'brand', d:'30s', desc:'브랜드 감성 숏폼 광고' },
+  { id:'YFU4erbddog', n:'브랜드 캠페인', c:'brand', d:'30s', desc:'브랜드 감성 숏폼 광고' },
   { id:'VU52Kx2AXL8', n:'시네마틱 무드', c:'cinematic', d:'45s', desc:'영화 같은 브랜드 필름' },
   { id:'YFU4erbddog', n:'ASMR 리뷰', c:'beauty', d:'30s', desc:'감촉 중심 감성 리뷰' },
   { id:'LygFajnhLFY', n:'스트릿 스냅', c:'fashion', d:'15s', desc:'거리 촬영 숏폼' },
   { id:'rxWNmzQpW2c', n:'카페 브이로그', c:'lifestyle', d:'60s', desc:'카페 제품 사용 일상' },
   { id:'RPmqjTwdVP8', n:'언박싱 하울', c:'commerce', d:'30s', desc:'다수 제품 동시 언박싱' },
-  { id:'ttR0eoHz9Bg', n:'프로모션 릴스', c:'commerce', d:'15s', desc:'할인·이벤트 고지' },
+  { id:'YFU4erbddog', n:'프로모션 릴스', c:'commerce', d:'15s', desc:'할인·이벤트 고지' },
   { id:'VU52Kx2AXL8', n:'나이트 무드', c:'cinematic', d:'30s', desc:'밤 분위기 시네마틱' },
 ];
 
