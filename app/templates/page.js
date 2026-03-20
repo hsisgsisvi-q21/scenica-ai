@@ -11,7 +11,7 @@ const T = [
   { id:'RPmqjTwdVP8', n:'상품 쇼케이스', c:'commerce', d:'15s', desc:'디테일 클로즈업 시네마틱' },
   { id:'YFU4erbddog', n:'브랜드 캠페인', c:'brand', d:'30s', desc:'브랜드 감성 숏폼 광고' },
   { id:'VU52Kx2AXL8', n:'시네마틱 무드', c:'cinematic', d:'45s', desc:'영화 같은 브랜드 필름' },
-  { id:'YFU4erbddog', n:'ASMR 리뷰', c:'beauty', d:'30s', desc:'감촉 중심 감성 리뷰' },
+  { id:'wMdSqpTGxJo', n:'드리미 비주얼', c:'cinematic', d:'45s', desc:'몽환적 시네마틱 비주얼' },
   { id:'LygFajnhLFY', n:'스트릿 스냅', c:'fashion', d:'15s', desc:'거리 촬영 숏폼' },
   { id:'rxWNmzQpW2c', n:'카페 브이로그', c:'lifestyle', d:'60s', desc:'카페 제품 사용 일상' },
   { id:'RPmqjTwdVP8', n:'언박싱 하울', c:'commerce', d:'30s', desc:'다수 제품 동시 언박싱' },
