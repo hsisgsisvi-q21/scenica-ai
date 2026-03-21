@@ -6,9 +6,9 @@ import Link from 'next/link';
 const CUSTOM_THUMB = { 'ttR0eoHz9Bg': ['/brand1.png', '/brand2.png', '/brand3.png'] };
 const YT = (id, idx = 0) => {
   if (CUSTOM_THUMB[id]) return CUSTOM_THUMB[id][idx % CUSTOM_THUMB[id].length];
-  return \`https://img.youtube.com/vi/\${id}/hq720.jpg\`;
+  return `https://img.youtube.com/vi/${id}/hq720.jpg`;
 };
-const YT_FB = (id) => \`https://img.youtube.com/vi/\${id}/hqdefault.jpg\`;
+const YT_FB = (id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
 const T = [
   { id:'YFU4erbddog', n:'뷰티 리뷰', c:'beauty', d:'30s', desc:'코스메틱 언박싱 + 사용 후기' },
   { id:'LygFajnhLFY', n:'패션 룩북', c:'fashion', d:'45s', desc:'시즌별 스타일링 숏폼' },
