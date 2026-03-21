@@ -292,9 +292,9 @@ export default function Home() {
           <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-white/[.03] via-white/[.06] to-white/[.03]" />
         </div>
 
-        {/* Stats — refined, more spacing */}
-        <div className="page-container py-2">
-          <div className="stat-row" data-aos="fade-up" data-aos-delay="100" data-aos-duration="900">
+        {/* Stats */}
+        <div className="page-container py-3 shimmer">
+          <div className="stat-row">
             {[
               { v: '130', u: '건', l: 'Orders' },
               { v: '3.2', u: '억', l: 'Revenue' },
@@ -302,9 +302,9 @@ export default function Home() {
               { v: '97', u: '%', l: 'Cost Saved' },
               { v: '40', u: '만+', l: 'Followers' },
             ].map((s, i) => (
-              <div key={s.l} className="stat-item group cursor-default">
-                <span className="stat-num group-hover:text-white/50 transition-colors duration-700">{s.v}<span className="text-[14px]">{s.u}</span></span>
-                <span className="stat-label">{s.l}</span>
+              <div key={s.l} className="stat-item group cursor-default" data-aos="fade-up" data-aos-delay={i * 100} data-aos-duration="800">
+                <span className="stat-num group-hover:text-white/90 transition-colors duration-500">{s.v}<span className="text-[15px]">{s.u}</span></span>
+                <span className="stat-label group-hover:text-white/40 transition-colors duration-500">{s.l}</span>
               </div>
             ))}
           </div>
@@ -316,20 +316,20 @@ export default function Home() {
           FEATURED — Large hero-style highlight
           ════════════════════════════════════ */}
       <section className="page-container pt-16 pb-6">
-        <div className="flex items-end justify-between mb-6" data-aos="fade-up">
+        <div className="flex items-end justify-between mb-6">
           <div>
-            <span className="sans text-[9px] text-white/[.08] uppercase tracking-[.2em]">Featured</span>
-            <h2 className="text-white/60 text-[15px] font-medium mt-1 tracking-[.01em]">이번 주 인기 콘텐츠</h2>
+            <span className="sans text-[9px] text-white/[.12] uppercase tracking-[.2em]" data-aos="fade-right" data-aos-duration="800">Featured</span>
+            <h2 className="text-white/60 text-[15px] font-medium mt-1 tracking-[.01em]" data-aos="blur-in" data-aos-delay="100" data-aos-duration="1000">이번 주 인기 콘텐츠</h2>
           </div>
-          <Link href="/templates" className="sans text-[9px] text-white/[.12] uppercase tracking-[.15em] hover:text-white/25 transition-colors">
-            View All
+          <Link href="/templates" className="sans text-[9px] text-white/[.15] uppercase tracking-[.15em] hover:text-white/30 transition-colors" data-aos="fade-left" data-aos-delay="200">
+            View All →
           </Link>
         </div>
 
         {/* 2-column featured */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3" data-aos="fade-up" data-aos-delay="80">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {[VIDEOS[0], VIDEOS[3]].map((v, i) => (
-            <div key={v.id + i} className="vcard cursor-pointer" onClick={() => setModal(v)}>
+            <div key={v.id + i} className="vcard cursor-pointer hover-lift" data-aos={i === 0 ? "fade-right" : "fade-left"} data-aos-delay={i * 150} data-aos-duration="1000" onClick={() => setModal(v)}>
               <img src={YT(v.id)} onError={(e)=>{e.target.src=YT_FALLBACK(v.id)}} alt="" className="thumb aspect-[21/10] md:aspect-[2/1]" />
               <div className="card-overlay" style={{ opacity: 1, background: 'linear-gradient(0deg, rgba(0,0,0,.7) 0%, transparent 60%)' }} />
               <div className="play-icon">
@@ -338,9 +338,9 @@ export default function Home() {
               <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 z-[2]">
                 <div className="text-white/80 text-[13px] md:text-[15px] font-medium tracking-[.01em]">{v.title}</div>
                 <div className="flex items-center gap-2.5 mt-2">
-                  <span className="text-white/25 text-[9px] sans uppercase tracking-[.15em]">{v.creator}</span>
-                  <span className="w-[2px] h-[2px] rounded-full bg-white/10" />
-                  <span className="text-white/[.12] text-[9px] sans">{v.views}</span>
+                  <span className="text-white/30 text-[9px] sans uppercase tracking-[.15em]">{v.creator}</span>
+                  <span className="w-[2px] h-[2px] rounded-full bg-white/15" />
+                  <span className="text-white/[.15] text-[9px] sans">{v.views}</span>
                 </div>
               </div>
             </div>
@@ -384,13 +384,13 @@ export default function Home() {
           <div className="max-w-[900px] mx-auto">
             {/* Heading */}
             <div className="grid md:grid-cols-2 gap-12 md:gap-20 mb-24">
-              <div data-aos="fade-up">
-                <span className="sans text-[9px] text-white/[.08] uppercase tracking-[.2em]">Why Scenica AI</span>
+              <div data-aos="fade-right" data-aos-duration="1100">
+                <span className="sans text-[9px] text-white/[.12] uppercase tracking-[.2em]">Why Scenica AI</span>
                 <h2 className="serif text-[26px] md:text-[36px] font-light text-white mt-5 leading-[1.15]" style={{ letterSpacing: '-0.025em' }}>
                   셀러는 상품만<br />등록하세요.
                 </h2>
               </div>
-              <div className="text-white/[.18] text-[13px] font-light leading-[2] md:pt-12" data-aos="fade-up" data-aos-delay="120">
+              <div className="text-white/[.22] text-[13px] font-light leading-[2] md:pt-12" data-aos="blur-in" data-aos-delay="200" data-aos-duration="1200">
                 팔로워 10만+ AI 인플루언서가 22단계 파이프라인으로 영상을 제작하고,
                 자체 채널에 게시하고, 판매를 추적하고, 수수료를 정산합니다.
                 기존 월 800만원의 비용을 3만원으로.
@@ -398,23 +398,23 @@ export default function Home() {
             </div>
 
             {/* Steps */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-[1px] bg-white/[.02] rounded-lg overflow-hidden" data-aos="fade-up" data-aos-delay="80">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-[1px] bg-white/[.02] rounded-lg overflow-hidden">
               {[
                 { n: '01', t: '상품 등록', d: '이미지와 정보만' },
                 { n: '02', t: 'AI 영상 생성', d: '22단계 파이프라인' },
                 { n: '03', t: '채널 게시', d: '10만+ 팔로워' },
                 { n: '04', t: '판매 정산', d: '자동 추적 · 정산' },
-              ].map((s) => (
-                <div key={s.n} className="bg-black p-6 md:p-8 group hover:bg-white/[.008] transition-colors duration-700">
-                  <div className="serif text-white/[.04] text-[28px] font-light mb-5 group-hover:text-white/[.08] transition-colors duration-700">{s.n}</div>
-                  <div className="text-white/50 text-[12px] font-medium mb-1 tracking-[.02em]">{s.t}</div>
-                  <div className="text-white/[.1] text-[10px] font-light">{s.d}</div>
+              ].map((s, idx) => (
+                <div key={s.n} className="bg-black p-6 md:p-8 group hover:bg-white/[.015] transition-all duration-700 hover-glow" data-aos="flip-up" data-aos-delay={idx * 120} data-aos-duration="900">
+                  <div className="serif text-white/[.06] text-[28px] font-light mb-5 group-hover:text-white/[.15] transition-colors duration-500">{s.n}</div>
+                  <div className="text-white/60 text-[12px] font-medium mb-1 tracking-[.02em]">{s.t}</div>
+                  <div className="text-white/[.15] text-[10px] font-light">{s.d}</div>
                 </div>
               ))}
             </div>
 
             {/* Comparison */}
-            <div className="grid grid-cols-3 gap-[1px] bg-white/[.02] rounded-lg overflow-hidden mt-2" data-aos="fade-up" data-aos-delay="120">
+            <div className="grid grid-cols-3 gap-[1px] bg-white/[.02] rounded-lg overflow-hidden mt-2" data-aos="scale-fade" data-aos-delay="150" data-aos-duration="1000">
               {[
                 { label: '인플루언서 섭외', value: '30~500만', sub: '건당', highlight: false },
                 { label: 'Scenica AI', value: '30,000', sub: '월 구독', highlight: true },
@@ -438,32 +438,32 @@ export default function Home() {
       <section className="py-20">
         <div className="sep mb-20" />
         <div className="page-container">
-          <div className="flex items-end justify-between mb-8" data-aos="fade-up">
+          <div className="flex items-end justify-between mb-8">
             <div>
-              <span className="sans text-[9px] text-white/[.08] uppercase tracking-[.2em]">AI Influencers</span>
-              <h2 className="text-white/50 text-[15px] font-medium mt-1 tracking-[.01em]">팔로워 40만+ AI 인플루언서</h2>
+              <span className="sans text-[9px] text-white/[.12] uppercase tracking-[.2em]" data-aos="fade-right" data-aos-duration="800">AI Influencers</span>
+              <h2 className="text-white/60 text-[15px] font-medium mt-1 tracking-[.01em]" data-aos="blur-in" data-aos-delay="100" data-aos-duration="1000">팔로워 40만+ AI 인플루언서</h2>
             </div>
-            <Link href="/influencers" className="sans text-[9px] text-white/[.12] uppercase tracking-[.15em] hover:text-white/25 transition-colors">
-              View All
+            <Link href="/influencers" className="sans text-[9px] text-white/[.15] uppercase tracking-[.15em] hover:text-white/30 transition-colors" data-aos="fade-left" data-aos-delay="200">
+              View All →
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3" data-aos="fade-up" data-aos-delay="60">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
               { name: 'YUNA', cat: 'Beauty', f: '12.4만', vid: 'YFU4erbddog' },
               { name: 'MISO', cat: 'Fashion', f: '8.7만', vid: 'LygFajnhLFY' },
               { name: 'HANA', cat: 'Lifestyle', f: '11.2만', vid: 'rxWNmzQpW2c' },
               { name: 'RINA', cat: 'Food', f: '9.8만', vid: 'RPmqjTwdVP8' },
-            ].map((inf) => (
-              <Link key={inf.name} href="/influencers" className="inf-profile group">
+            ].map((inf, idx) => (
+              <Link key={inf.name} href="/influencers" className="inf-profile group hover-lift hover-bright" data-aos="zoom-in" data-aos-delay={idx * 100} data-aos-duration="900">
                 <div className="aspect-[3/4] relative overflow-hidden">
                   <img src={YT(inf.vid)} onError={(e)=>{e.target.src=YT_FALLBACK(inf.vid)}} alt="" className="w-full h-full object-cover" style={{ objectPosition: '50% 20%' }} />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
-                    <div className="sans text-[8px] text-white/20 uppercase tracking-[.2em] mb-1.5">{inf.cat}</div>
+                    <div className="sans text-[8px] text-white/25 uppercase tracking-[.2em] mb-1.5">{inf.cat}</div>
                     <div className="flex items-end justify-between">
                       <span className="text-white/80 text-[14px] font-medium sans tracking-[.03em]">{inf.name}</span>
-                      <span className="text-white/15 text-[10px] sans">{inf.f}</span>
+                      <span className="text-white/20 text-[10px] sans">{inf.f}</span>
                     </div>
                   </div>
                 </div>
@@ -478,14 +478,14 @@ export default function Home() {
           ════════════════════════════════════ */}
       <section className="py-28">
         <div className="sep mb-28" />
-        <div className="page-container text-center" data-aos="fade-up">
-          <span className="sans text-[9px] text-white/[.06] uppercase tracking-[.2em]">Get Started</span>
-          <h2 className="serif text-[26px] md:text-[38px] font-light text-white mt-5 leading-[1.15]" style={{ letterSpacing: '-0.025em' }}>
+        <div className="page-container text-center">
+          <span className="sans text-[9px] text-white/[.1] uppercase tracking-[.2em]" data-aos="fade-down" data-aos-duration="800">Get Started</span>
+          <h2 className="serif text-[26px] md:text-[38px] font-light text-white mt-5 leading-[1.15]" style={{ letterSpacing: '-0.025em' }} data-aos="blur-in" data-aos-delay="100" data-aos-duration="1200">
             지금 시작하세요
           </h2>
-          <p className="text-white/[.12] text-[12px] font-light mt-4 mb-10">사전등록 시 Pro 50% 영구 할인 + 1개월 무료 체험</p>
-          <div className="flex items-center justify-center gap-3">
-            <Link href="/create" className="btn-w sans">시작하기</Link>
+          <p className="text-white/[.18] text-[12px] font-light mt-4 mb-10" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">사전등록 시 Pro 50% 영구 할인 + 1개월 무료 체험</p>
+          <div className="flex items-center justify-center gap-3" data-aos="scale-fade" data-aos-delay="300" data-aos-duration="900">
+            <Link href="/create" className="btn-w sans glow">시작하기</Link>
             <Link href="/pricing" className="btn-o sans">요금제 보기</Link>
           </div>
         </div>
