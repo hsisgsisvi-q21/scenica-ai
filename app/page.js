@@ -109,7 +109,7 @@ function Modal({ video, onClose }) {
 function Card({ video, i, onClick }) {
   return (
     <div className="vcard" onClick={() => onClick(video)} data-aos="fade-up" data-aos-delay={Math.min(i * 50, 300)} data-aos-duration="900">
-      <img src={YT(video.id, i)} onError={(e)=>{e.target.src=YT_FALLBACK(video.id)}} alt="" className="thumb aspect-video" loading="lazy" />
+      <img src={video.thumb || YT(video.id)} onError={(e)=>{e.target.src=YT_FALLBACK(video.id)}} alt="" className="thumb aspect-video" loading="lazy" />
       <div className="card-overlay" />
       <div className="play-icon">
         <svg width="13" height="15" viewBox="0 0 13 15" fill="#000"><polygon points="1.5,0 13,7.5 1.5,15"/></svg>
@@ -217,7 +217,13 @@ export default function Home() {
           <div className="absolute inset-0 bg-black/10" />
 
           {/* Decorative vertical line */}
-          <div className="absolute left-[28px] md:left-[48px] lg:left-[64px] top-[20%] bottom-[30%] w-[0.5px] bg-gradient-to-b from-transparent via-white/[.06] to-transparent" data-aos="fade-up" data-aos-duration="1500" />
+          {/* Animated decorative vertical line */}
+          <div className="absolute left-[28px] md:left-[48px] lg:left-[64px] top-[15%] bottom-[25%] gradient-line-v" data-aos="fade-up" data-aos-duration="1500" />
+
+          {/* Floating particle dots */}
+          <div className="absolute right-[15%] top-[25%] particle-dot" style={{ animationDelay: '0s' }} />
+          <div className="absolute right-[20%] top-[40%] particle-dot" style={{ animationDelay: '1.5s' }} />
+          <div className="absolute right-[12%] top-[55%] particle-dot" style={{ animationDelay: '3s' }} />
 
           {/* Content */}
           <div className="absolute inset-0 flex items-end">
@@ -225,10 +231,10 @@ export default function Home() {
 
               {/* Eyebrow */}
               <div className="flex items-center gap-4 mb-8" data-aos="fade-up" data-aos-duration="800">
-                <div className="w-8 h-[0.5px] bg-white/15" />
-                <div className="hero-badge">
+                <div className="w-10 gradient-line" />
+                <div className="hero-badge border-glow">
                   <span className="w-[4px] h-[4px] rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="sans">Early Access Open</span>
+                  <span className="sans soft-pulse">Early Access Open</span>
                 </div>
               </div>
 
@@ -239,7 +245,7 @@ export default function Home() {
                   className="serif text-[32px] sm:text-[42px] md:text-[54px] lg:text-[64px] font-light text-white leading-[1.12] max-w-2xl"
                   style={{ letterSpacing: '-0.03em', textShadow: '0 4px 30px rgba(0,0,0,.5)' }}
                 >
-                  AI 인플루언서가<br />마케팅을 <span className="italic text-white/80">책임져</span> 드립니다
+                  AI 인플루언서가<br />마케팅을 <span className="italic text-white/80">책임져</span><br />드립니다
                 </h1>
               </div>
 
@@ -313,6 +319,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Animated gradient line divider */}
+      <div className="gradient-line" />
+
       {/* ════════════════════════════════════
           FEATURED — Large hero-style highlight
           ════════════════════════════════════ */}
@@ -330,8 +339,8 @@ export default function Home() {
         {/* 2-column featured */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {[VIDEOS[0], VIDEOS[3]].map((v, i) => (
-            <div key={v.id + i} className="vcard cursor-pointer hover-lift" data-aos={i === 0 ? "fade-right" : "fade-left"} data-aos-delay={i * 150} data-aos-duration="1000" onClick={() => setModal(v)}>
-              <img src={YT(v.id)} onError={(e)=>{e.target.src=YT_FALLBACK(v.id)}} alt="" className="thumb aspect-[21/10] md:aspect-[2/1]" />
+            <div key={v.id + i} className="vcard cursor-pointer hover-lift spotlight" data-aos={i === 0 ? "fade-right" : "fade-left"} data-aos-delay={i * 150} data-aos-duration="1000" onClick={() => setModal(v)}>
+              <img src={v.thumb || YT(v.id)} onError={(e)=>{e.target.src=YT_FALLBACK(v.id)}} alt="" className="thumb aspect-[21/10] md:aspect-[2/1]" />
               <div className="card-overlay" style={{ opacity: 1, background: 'linear-gradient(0deg, rgba(0,0,0,.7) 0%, transparent 60%)' }} />
               <div className="play-icon">
                 <svg width="13" height="15" viewBox="0 0 13 15" fill="#000"><polygon points="1.5,0 13,7.5 1.5,15"/></svg>
@@ -371,16 +380,19 @@ export default function Home() {
 
         {/* CTA */}
         <div className="flex items-center justify-center gap-4 mt-14" data-aos="fade-up" data-aos-delay="100">
-          <Link href="/create" className="btn-w sans">Start Creating</Link>
-          <Link href="/templates" className="btn-o sans">Browse Templates</Link>
+          <Link href="/create" className="btn-w sans btn-ripple">Start Creating</Link>
+          <Link href="/templates" className="btn-o sans btn-ripple">Browse Templates</Link>
         </div>
       </section>
+
+      {/* Animated gradient line */}
+      <div className="gradient-line" />
 
       {/* ════════════════════════════════════
           VALUE PROP — Clean, editorial
           ════════════════════════════════════ */}
       <section className="py-24">
-        <div className="sep mb-24" />
+        <div className="gradient-line mb-24" />
         <div className="page-container">
           <div className="max-w-[900px] mx-auto">
             {/* Heading */}
@@ -406,8 +418,8 @@ export default function Home() {
                 { n: '03', t: '채널 게시', d: '10만+ 팔로워' },
                 { n: '04', t: '판매 정산', d: '자동 추적 · 정산' },
               ].map((s, idx) => (
-                <div key={s.n} className="bg-black p-6 md:p-8 group hover:bg-white/[.015] transition-all duration-700 hover-glow" data-aos="flip-up" data-aos-delay={idx * 120} data-aos-duration="900">
-                  <div className="serif text-white/[.1] text-[28px] font-light mb-5 group-hover:text-white/[.25] transition-colors duration-500">{s.n}</div>
+                <div key={s.n} className="bg-black p-6 md:p-8 group spotlight hover-border-glow transition-all duration-700" data-aos="flip-up" data-aos-delay={idx * 120} data-aos-duration="900">
+                  <div className="serif text-white/[.1] text-[28px] font-light mb-5 group-hover:text-white/[.25] group-hover:text-glow transition-colors duration-500">{s.n}</div>
                   <div className="text-white/70 text-[12px] font-medium mb-1 tracking-[.02em]">{s.t}</div>
                   <div className="text-white/[.25] text-[10px] font-light">{s.d}</div>
                 </div>
@@ -421,7 +433,7 @@ export default function Home() {
                 { label: 'Scenica AI', value: '30,000', sub: '월 구독', highlight: true },
                 { label: 'AI 영상 툴', value: '채널 없음', sub: '영상만 생성', highlight: false },
               ].map((c) => (
-                <div key={c.label} className={`bg-[#050505] p-5 md:p-7 text-center relative hover:bg-white/[.02] transition-all duration-700 ${c.highlight ? '!bg-[#080808] glow' : ''}`}>
+                <div key={c.label} className={`bg-[#050505] p-5 md:p-7 text-center relative hover:bg-white/[.02] transition-all duration-700 ${c.highlight ? '!bg-[#080808] glow border-glow' : ''}`}>
                   {c.highlight && <div className="absolute top-0 left-[15%] right-[15%] h-[1px] bg-gradient-to-r from-transparent via-white/25 to-transparent" />}
                   <div className={`sans text-[9px] uppercase tracking-[.2em] mb-3 ${c.highlight ? 'text-white/30' : 'text-white/15'}`}>{c.label}</div>
                   <div className={`serif text-[20px] font-light ${c.highlight ? 'text-white/80' : 'text-white/35'}`}>{c.value}</div>
@@ -433,11 +445,14 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Animated gradient line */}
+      <div className="gradient-line" />
+
       {/* ════════════════════════════════════
           AI INFLUENCERS PREVIEW
           ════════════════════════════════════ */}
       <section className="py-20">
-        <div className="sep mb-20" />
+        <div className="gradient-line mb-20" />
         <div className="page-container">
           <div className="flex items-end justify-between mb-8">
             <div>
@@ -475,20 +490,28 @@ export default function Home() {
       </section>
 
       {/* ════════════════════════════════════
-          CTA — Clean, minimal
+          CTA — Luxurious, glass
           ════════════════════════════════════ */}
       <section className="py-28">
-        <div className="sep mb-28" />
+        <div className="gradient-line mb-28" />
         <div className="page-container text-center">
-          <span className="sans text-[9px] text-white/[.35] uppercase tracking-[.2em]" data-aos="fade-down" data-aos-duration="800">Get Started</span>
-          <h2 className="serif text-[26px] md:text-[38px] font-light text-white mt-5 leading-[1.15]" style={{ letterSpacing: '-0.025em' }} data-aos="blur-in" data-aos-delay="100" data-aos-duration="1200">
+          {/* Decorative dots */}
+          <div className="flex items-center justify-center gap-3 mb-6" data-aos="fade-down" data-aos-duration="800">
+            <div className="particle-dot" style={{ animationDelay: '0s' }} />
+            <div className="particle-dot" style={{ animationDelay: '1s' }} />
+            <div className="particle-dot" style={{ animationDelay: '2s' }} />
+          </div>
+          <span className="sans text-[9px] text-white/[.35] uppercase tracking-[.2em]" data-aos="fade-down" data-aos-delay="50" data-aos-duration="800">Get Started</span>
+          <h2 className="serif text-[26px] md:text-[38px] font-light text-white mt-5 leading-[1.15] text-glow" style={{ letterSpacing: '-0.025em' }} data-aos="blur-in" data-aos-delay="100" data-aos-duration="1200">
             지금 시작하세요
           </h2>
           <p className="text-white/[.4] text-[13px] font-light mt-4 mb-10" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">사전등록 시 Pro 50% 영구 할인 + 1개월 무료 체험</p>
           <div className="flex items-center justify-center gap-3" data-aos="scale-fade" data-aos-delay="300" data-aos-duration="900">
-            <Link href="/create" className="btn-w sans glow">시작하기</Link>
-            <Link href="/pricing" className="btn-o sans">요금제 보기</Link>
+            <Link href="/create" className="btn-w sans btn-ripple glow">시작하기</Link>
+            <Link href="/pricing" className="btn-o sans btn-ripple">요금제 보기</Link>
           </div>
+          {/* Decorative gradient line below */}
+          <div className="w-32 mx-auto mt-12 gradient-line" data-aos="fade-up" data-aos-delay="400" />
         </div>
       </section>
 
