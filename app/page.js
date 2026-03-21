@@ -166,18 +166,18 @@ export default function Home() {
 
   const hero = VIDEOS[1];
 
-  // 10 frames — brand1/2/3.png are custom screenshots from ttR0eoHz9Bg
+  // ONLY confirmed working images
   const HERO_FRAMES = [
     { src: `https://img.youtube.com/vi/YFU4erbddog/hq720.jpg`, pos: '50% 20%', scale: '1.05' },
     { src: `/brand1.png`, pos: '50% 25%', scale: '1.08' },
     { src: `https://img.youtube.com/vi/LygFajnhLFY/hq720.jpg`, pos: '45% 15%', scale: '1.06' },
     { src: `/brand2.png`, pos: '50% 30%', scale: '1.04' },
-    { src: `https://img.youtube.com/vi/VU52Kx2AXL8/hq720.jpg`, pos: '50% 30%', scale: '1.07' },
-    { src: `https://img.youtube.com/vi/wMdSqpTGxJo/hq720.jpg`, pos: '50% 20%', scale: '1.1' },
-    { src: `/brand3.png`, pos: '50% 25%', scale: '1.05' },
-    { src: `https://img.youtube.com/vi/rxWNmzQpW2c/hq720.jpg`, pos: '60% 20%', scale: '1.12' },
-    { src: `https://img.youtube.com/vi/RPmqjTwdVP8/hq720.jpg`, pos: '55% 30%', scale: '1.15' },
-    { src: `https://img.youtube.com/vi/YFU4erbddog/hq720.jpg`, pos: '60% 30%', scale: '1.09' },
+    { src: `https://img.youtube.com/vi/wMdSqpTGxJo/hq720.jpg`, pos: '50% 25%', scale: '1.1' },
+    { src: `/brand3.png`, pos: '50% 20%', scale: '1.05' },
+    { src: `https://img.youtube.com/vi/YFU4erbddog/hq720.jpg`, pos: '60% 30%', scale: '1.12' },
+    { src: `https://img.youtube.com/vi/LygFajnhLFY/hq720.jpg`, pos: '55% 20%', scale: '1.07' },
+    { src: `/brand1.png`, pos: '55% 30%', scale: '1.15' },
+    { src: `https://img.youtube.com/vi/wMdSqpTGxJo/hq720.jpg`, pos: '60% 25%', scale: '1.09' },
   ];
 
   const [heroIdx, setHeroIdx] = useState(0);
