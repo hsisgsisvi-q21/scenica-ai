@@ -390,7 +390,7 @@ export default function Home() {
                   셀러는 상품만<br />등록하세요.
                 </h2>
               </div>
-              <div className="text-white/[.22] text-[13px] font-light leading-[2] md:pt-12" data-aos="blur-in" data-aos-delay="200" data-aos-duration="1200">
+              <div className="text-white/[.35] text-[13px] font-light leading-[2] md:pt-12" data-aos="blur-in" data-aos-delay="200" data-aos-duration="1200">
                 팔로워 10만+ AI 인플루언서가 22단계 파이프라인으로 영상을 제작하고,
                 자체 채널에 게시하고, 판매를 추적하고, 수수료를 정산합니다.
                 기존 월 800만원의 비용을 3만원으로.
@@ -406,25 +406,25 @@ export default function Home() {
                 { n: '04', t: '판매 정산', d: '자동 추적 · 정산' },
               ].map((s, idx) => (
                 <div key={s.n} className="bg-black p-6 md:p-8 group hover:bg-white/[.015] transition-all duration-700 hover-glow" data-aos="flip-up" data-aos-delay={idx * 120} data-aos-duration="900">
-                  <div className="serif text-white/[.06] text-[28px] font-light mb-5 group-hover:text-white/[.15] transition-colors duration-500">{s.n}</div>
-                  <div className="text-white/60 text-[12px] font-medium mb-1 tracking-[.02em]">{s.t}</div>
-                  <div className="text-white/[.15] text-[10px] font-light">{s.d}</div>
+                  <div className="serif text-white/[.1] text-[28px] font-light mb-5 group-hover:text-white/[.25] transition-colors duration-500">{s.n}</div>
+                  <div className="text-white/70 text-[12px] font-medium mb-1 tracking-[.02em]">{s.t}</div>
+                  <div className="text-white/[.25] text-[10px] font-light">{s.d}</div>
                 </div>
               ))}
             </div>
 
             {/* Comparison */}
-            <div className="grid grid-cols-3 gap-[1px] bg-white/[.02] rounded-lg overflow-hidden mt-2" data-aos="scale-fade" data-aos-delay="150" data-aos-duration="1000">
+            <div className="grid grid-cols-3 gap-[1px] bg-white/[.04] rounded-lg overflow-hidden mt-2" data-aos="scale-fade" data-aos-delay="150" data-aos-duration="1000">
               {[
                 { label: '인플루언서 섭외', value: '30~500만', sub: '건당', highlight: false },
                 { label: 'Scenica AI', value: '30,000', sub: '월 구독', highlight: true },
                 { label: 'AI 영상 툴', value: '채널 없음', sub: '영상만 생성', highlight: false },
               ].map((c) => (
-                <div key={c.label} className={`bg-black p-5 md:p-6 text-center relative hover:bg-white/[.005] transition-colors duration-700 ${c.highlight ? '!bg-[#040404]' : ''}`}>
-                  {c.highlight && <div className="absolute top-0 left-[20%] right-[20%] h-[.5px] bg-gradient-to-r from-transparent via-white/15 to-transparent" />}
-                  <div className="sans text-[8px] text-white/[.08] uppercase tracking-[.2em] mb-3">{c.label}</div>
-                  <div className={`serif text-[18px] font-light ${c.highlight ? 'text-white/60' : 'text-white/20'}`}>{c.value}</div>
-                  <div className="text-white/[.05] text-[9px] mt-1 sans tracking-[.1em]">{c.sub}</div>
+                <div key={c.label} className={`bg-[#050505] p-5 md:p-7 text-center relative hover:bg-white/[.02] transition-all duration-700 ${c.highlight ? '!bg-[#080808] glow' : ''}`}>
+                  {c.highlight && <div className="absolute top-0 left-[15%] right-[15%] h-[1px] bg-gradient-to-r from-transparent via-white/25 to-transparent" />}
+                  <div className={`sans text-[9px] uppercase tracking-[.2em] mb-3 ${c.highlight ? 'text-white/30' : 'text-white/15'}`}>{c.label}</div>
+                  <div className={`serif text-[20px] font-light ${c.highlight ? 'text-white/80' : 'text-white/35'}`}>{c.value}</div>
+                  <div className={`text-[9px] mt-1.5 sans tracking-[.1em] ${c.highlight ? 'text-white/20' : 'text-white/10'}`}>{c.sub}</div>
                 </div>
               ))}
             </div>
@@ -479,11 +479,11 @@ export default function Home() {
       <section className="py-28">
         <div className="sep mb-28" />
         <div className="page-container text-center">
-          <span className="sans text-[9px] text-white/[.1] uppercase tracking-[.2em]" data-aos="fade-down" data-aos-duration="800">Get Started</span>
+          <span className="sans text-[9px] text-white/[.2] uppercase tracking-[.2em]" data-aos="fade-down" data-aos-duration="800">Get Started</span>
           <h2 className="serif text-[26px] md:text-[38px] font-light text-white mt-5 leading-[1.15]" style={{ letterSpacing: '-0.025em' }} data-aos="blur-in" data-aos-delay="100" data-aos-duration="1200">
             지금 시작하세요
           </h2>
-          <p className="text-white/[.18] text-[12px] font-light mt-4 mb-10" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">사전등록 시 Pro 50% 영구 할인 + 1개월 무료 체험</p>
+          <p className="text-white/[.3] text-[13px] font-light mt-4 mb-10" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">사전등록 시 Pro 50% 영구 할인 + 1개월 무료 체험</p>
           <div className="flex items-center justify-center gap-3" data-aos="scale-fade" data-aos-delay="300" data-aos-duration="900">
             <Link href="/create" className="btn-w sans glow">시작하기</Link>
             <Link href="/pricing" className="btn-o sans">요금제 보기</Link>
