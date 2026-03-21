@@ -247,7 +247,7 @@ export default function Home() {
                   style={{ letterSpacing: '-0.035em' }}
                 >
                   AI 인플루언서가<br />
-                  <span className="italic text-white/80">직접</span> 팔아줍니다
+                  마케팅을 <span className="italic text-white/80">책임져</span> 드립니다
                 </h1>
               </div>
 
@@ -256,7 +256,7 @@ export default function Home() {
                 <div className="w-[0.5px] bg-white/[.08] shrink-0" />
                 <p className="text-white/20 text-[12px] md:text-[13px] font-light leading-[2] pl-1">
                   상품만 등록하세요. 팔로워 10만+ AI 인플루언서가<br />
-                  영상 제작부터 판매까지 전부 자동으로.
+                  영상 제작부터 마케팅까지 전부 자동으로.
                 </p>
               </div>
 
