@@ -232,15 +232,14 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Title — mixed weight for luxury feel */}
+              {/* Title */}
               <div data-aos="fade-up" data-aos-delay="100" data-aos-duration="1200">
-                <div className="sans text-[10px] text-white/[.3] uppercase tracking-[.3em] mb-4">AI Influencer Commerce Platform</div>
+                <div className="sans text-[10px] text-white/[.3] uppercase tracking-[.3em] mb-5">AI Influencer Commerce Platform</div>
                 <h1
-                  className="serif text-[36px] sm:text-[48px] md:text-[62px] lg:text-[76px] font-light text-white leading-[1.04] max-w-2xl"
-                  style={{ letterSpacing: '-0.035em' }}
+                  className="serif text-[32px] sm:text-[42px] md:text-[54px] lg:text-[64px] font-light text-white leading-[1.12] max-w-2xl"
+                  style={{ letterSpacing: '-0.03em', textShadow: '0 4px 30px rgba(0,0,0,.5)' }}
                 >
-                  AI 인플루언서가<br />
-                  마케팅을 <span className="italic text-white/80">책임져</span> 드립니다
+                  AI 인플루언서가<br />마케팅을 <span className="italic text-white/80">책임져</span> 드립니다
                 </h1>
               </div>
 
