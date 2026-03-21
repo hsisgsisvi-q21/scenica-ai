@@ -67,26 +67,26 @@ function Footer() {
             <div className="w-5 h-5 rounded-[4px] bg-white/[.04] flex items-center justify-center group-hover:bg-white/[.07] transition-colors">
               <span className="text-white/25 text-[7px] sans font-semibold">S</span>
             </div>
-            <span className="sans text-[10px] text-white/[.15] group-hover:text-white/30 transition-colors tracking-[.1em]">Scenica AI</span>
+            <span className="sans text-[10px] text-white/[.25] group-hover:text-white/45 transition-colors tracking-[.1em]">Scenica AI</span>
           </Link>
-          <p className="text-white/[.12] text-[10px] max-w-[260px] leading-[1.8]">AI 인플루언서 숏폼 이커머스 플랫폼</p>
+          <p className="text-white/[.2] text-[10px] max-w-[260px] leading-[1.8]">AI 인플루언서 숏폼 이커머스 플랫폼</p>
         </div>
         <div className="flex gap-16">
           <div>
-            <div className="sans text-[8px] text-white/[.12] uppercase tracking-[.2em] mb-4">Product</div>
+            <div className="sans text-[8px] text-white/[.2] uppercase tracking-[.2em] mb-4">Product</div>
             <div className="flex flex-col gap-3">
               {[['/', 'Home'], ['/create', 'Studio'], ['/influencers', 'Influencers']].map(([h, l]) => (
-                <Link key={h} href={h} className="sans text-[10px] text-white/[.15] hover:text-white/35 transition-colors">{l}</Link>
+                <Link key={h} href={h} className="sans text-[10px] text-white/[.25] hover:text-white/50 transition-colors">{l}</Link>
               ))}
             </div>
           </div>
           <div>
-            <div className="sans text-[8px] text-white/[.12] uppercase tracking-[.2em] mb-4">Company</div>
+            <div className="sans text-[8px] text-white/[.2] uppercase tracking-[.2em] mb-4">Company</div>
             <div className="flex flex-col gap-3">
               {[['/pricing', 'Pricing'], ['/about', 'About']].map(([h, l]) => (
-                <Link key={h} href={h} className="sans text-[10px] text-white/[.15] hover:text-white/35 transition-colors">{l}</Link>
+                <Link key={h} href={h} className="sans text-[10px] text-white/[.25] hover:text-white/50 transition-colors">{l}</Link>
               ))}
-              <a href="mailto:hello@scenica.ai" className="sans text-[10px] text-white/[.15] hover:text-white/35 transition-colors">Contact</a>
+              <a href="mailto:hello@scenica.ai" className="sans text-[10px] text-white/[.25] hover:text-white/50 transition-colors">Contact</a>
             </div>
           </div>
         </div>
