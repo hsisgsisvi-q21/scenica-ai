@@ -5,18 +5,18 @@ import Link from 'next/link';
 
 /* ═══ Data ═══ */
 const VIDEOS = [
-  { id: 'YFU4erbddog', title: 'Shh No Talk Tonight', creator: 'YUNA', cat: 'cinematic', views: '891K' },
-  { id: 'VU52Kx2AXL8', title: 'Night City Mood', creator: 'YUNA', cat: 'cinematic', views: '324K' },
-  { id: 'LygFajnhLFY', title: 'Street Fashion Film', creator: 'MISO', cat: 'fashion', views: '512K' },
-  { id: 'wMdSqpTGxJo', title: 'Dreamy Visual', creator: 'YUNA', cat: 'cinematic', views: '567K' },
-  { id: 'ttR0eoHz9Bg', title: 'Brand Campaign', creator: 'MISO', cat: 'commerce', views: '445K' },
-  { id: 'rxWNmzQpW2c', title: 'Morning Routine', creator: 'HANA', cat: 'lifestyle', views: '267K' },
-  { id: 'RPmqjTwdVP8', title: 'Product Showcase', creator: 'RINA', cat: 'commerce', views: '183K' },
-  { id: 'wMdSqpTGxJo', title: 'Midnight Film', creator: 'HANA', cat: 'beauty', views: '412K' },
-  { id: 'YFU4erbddog', title: 'Cosmetics Editorial', creator: 'MISO', cat: 'beauty', views: '678K' },
-  { id: 'LygFajnhLFY', title: 'Lookbook SS26', creator: 'HANA', cat: 'fashion', views: '394K' },
-  { id: 'ttR0eoHz9Bg', title: 'Summer Collection', creator: 'RINA', cat: 'fashion', views: '289K' },
-  { id: 'VU52Kx2AXL8', title: 'Cinematic Portrait', creator: 'MISO', cat: 'cinematic', views: '733K' },
+  { id: 'YFU4erbddog', title: 'Shh No Talk Tonight', creator: 'YUNA', cat: 'cinematic', views: '891K', thumb: null },
+  { id: 'VU52Kx2AXL8', title: 'Night City Mood', creator: 'YUNA', cat: 'cinematic', views: '324K', thumb: null },
+  { id: 'LygFajnhLFY', title: 'Street Fashion Film', creator: 'MISO', cat: 'fashion', views: '512K', thumb: null },
+  { id: 'wMdSqpTGxJo', title: 'Dreamy Visual', creator: 'YUNA', cat: 'cinematic', views: '567K', thumb: null },
+  { id: 'ttR0eoHz9Bg', title: 'Brand Campaign', creator: 'MISO', cat: 'commerce', views: '445K', thumb: '/brand1.png' },
+  { id: 'rxWNmzQpW2c', title: 'Morning Routine', creator: 'HANA', cat: 'lifestyle', views: '267K', thumb: null },
+  { id: 'RPmqjTwdVP8', title: 'Product Showcase', creator: 'RINA', cat: 'commerce', views: '183K', thumb: null },
+  { id: 'ttR0eoHz9Bg', title: 'Midnight Film', creator: 'HANA', cat: 'beauty', views: '412K', thumb: '/brand2.png' },
+  { id: 'wMdSqpTGxJo', title: 'Cosmetics Editorial', creator: 'MISO', cat: 'beauty', views: '678K', thumb: null },
+  { id: 'ttR0eoHz9Bg', title: 'Lookbook SS26', creator: 'HANA', cat: 'fashion', views: '394K', thumb: '/brand3.png' },
+  { id: 'LygFajnhLFY', title: 'Summer Collection', creator: 'RINA', cat: 'fashion', views: '289K', thumb: null },
+  { id: 'YFU4erbddog', title: 'Cinematic Portrait', creator: 'MISO', cat: 'cinematic', views: '733K', thumb: null },
 ];
 
 const CATS = [
@@ -25,17 +25,10 @@ const CATS = [
   { key: 'lifestyle', label: 'Lifestyle' }, { key: 'commerce', label: 'Commerce' },
 ];
 
-// Custom thumbnails for videos where YouTube doesn't provide images
-const CUSTOM_THUMB = {
-  'ttR0eoHz9Bg': ['/brand1.png', '/brand2.png', '/brand3.png'],
-};
-
-// Smart thumbnail - custom first, then YouTube
-const YT = (id, idx = 0) => {
-  if (CUSTOM_THUMB[id]) return CUSTOM_THUMB[id][idx % CUSTOM_THUMB[id].length];
-  return `https://img.youtube.com/vi/${id}/hq720.jpg`;
-};
+// Thumbnail - use custom thumb if set, otherwise YouTube
+const YT = (id) => `https://img.youtube.com/vi/${id}/hq720.jpg`;
 const YT_FALLBACK = (id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+const THUMB = (video) => video.thumb || YT(video.id);
 const EMBED = (id) => `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&showinfo=0&modestbranding=1&iv_load_policy=3&cc_load_policy=0&rel=0&playsinline=1&disablekb=1&fs=0&enablejsapi=1`;
 
 /* ═══ AOS ═══ */
@@ -241,7 +234,7 @@ export default function Home() {
 
               {/* Title — mixed weight for luxury feel */}
               <div data-aos="fade-up" data-aos-delay="100" data-aos-duration="1200">
-                <div className="sans text-[10px] text-white/[.15] uppercase tracking-[.3em] mb-4">AI Influencer Commerce Platform</div>
+                <div className="sans text-[10px] text-white/[.3] uppercase tracking-[.3em] mb-4">AI Influencer Commerce Platform</div>
                 <h1
                   className="serif text-[36px] sm:text-[48px] md:text-[62px] lg:text-[76px] font-light text-white leading-[1.04] max-w-2xl"
                   style={{ letterSpacing: '-0.035em' }}
@@ -254,7 +247,7 @@ export default function Home() {
               {/* Description with left border */}
               <div className="flex items-stretch gap-4 mt-8 max-w-md" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1200">
                 <div className="w-[0.5px] bg-white/[.08] shrink-0" />
-                <p className="text-white/20 text-[12px] md:text-[13px] font-light leading-[2] pl-1">
+                <p className="text-white/35 text-[12px] md:text-[13px] font-light leading-[2] pl-1">
                   상품만 등록하세요. 팔로워 10만+ AI 인플루언서가<br />
                   영상 제작부터 마케팅까지 전부 자동으로.
                 </p>
@@ -292,24 +285,33 @@ export default function Home() {
           <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-white/[.03] via-white/[.06] to-white/[.03]" />
         </div>
 
-        {/* Stats */}
-        <div className="page-container py-3 shimmer">
-          <div className="stat-row">
-            {[
-              { v: '130', u: '건', l: 'Orders' },
-              { v: '3.2', u: '억', l: 'Revenue' },
-              { v: '9', u: 'x', l: 'Conversion' },
-              { v: '97', u: '%', l: 'Cost Saved' },
-              { v: '40', u: '만+', l: 'Followers' },
-            ].map((s, i) => (
-              <div key={s.l} className="stat-item group cursor-default" data-aos="fade-up" data-aos-delay={i * 100} data-aos-duration="800">
-                <span className="stat-num group-hover:text-white/90 transition-colors duration-500">{s.v}<span className="text-[15px]">{s.u}</span></span>
-                <span className="stat-label group-hover:text-white/40 transition-colors duration-500">{s.l}</span>
+        {/* Stats — Infinite Marquee */}
+        <div className="overflow-hidden py-4 border-y border-white/[.06]">
+          <div className="marquee-track">
+            {[1, 2, 3].map((loop) => (
+              <div key={loop} className="marquee-content">
+                {[
+                  { v: '130', u: '건', l: 'ORDERS' },
+                  { v: '3.2', u: '억', l: 'REVENUE' },
+                  { v: '9', u: 'x', l: 'CONVERSION' },
+                  { v: '97', u: '%', l: 'COST SAVED' },
+                  { v: '40', u: '만+', l: 'FOLLOWERS' },
+                  { v: '4.3', u: '/5', l: 'SATISFACTION' },
+                  { v: '67', u: '%', l: 'REORDER' },
+                  { v: '2.8', u: '%', l: 'CTR' },
+                ].map((s) => (
+                  <div key={`${loop}-${s.l}`} className="flex items-center gap-10 px-8">
+                    <div className="flex items-baseline gap-2">
+                      <span className="serif text-[24px] font-light text-white/70">{s.v}<span className="text-[16px] text-white/40">{s.u}</span></span>
+                      <span className="sans text-[9px] text-white/25 tracking-[.2em]">{s.l}</span>
+                    </div>
+                    <span className="text-white/[.06] text-[10px]">✦</span>
+                  </div>
+                ))}
               </div>
             ))}
           </div>
         </div>
-        <div className="h-[0.5px] bg-gradient-to-r from-transparent via-white/[.04] to-transparent" />
       </section>
 
       {/* ════════════════════════════════════
@@ -319,9 +321,9 @@ export default function Home() {
         <div className="flex items-end justify-between mb-6">
           <div>
             <span className="sans text-[9px] text-white/[.12] uppercase tracking-[.2em]" data-aos="fade-right" data-aos-duration="800">Featured</span>
-            <h2 className="text-white/60 text-[15px] font-medium mt-1 tracking-[.01em]" data-aos="blur-in" data-aos-delay="100" data-aos-duration="1000">이번 주 인기 콘텐츠</h2>
+            <h2 className="text-white/80 text-[15px] font-medium mt-1 tracking-[.01em]" data-aos="blur-in" data-aos-delay="100" data-aos-duration="1000">이번 주 인기 콘텐츠</h2>
           </div>
-          <Link href="/templates" className="sans text-[9px] text-white/[.15] uppercase tracking-[.15em] hover:text-white/30 transition-colors" data-aos="fade-left" data-aos-delay="200">
+          <Link href="/templates" className="sans text-[9px] text-white/[.3] uppercase tracking-[.15em] hover:text-white/30 transition-colors" data-aos="fade-left" data-aos-delay="200">
             View All →
           </Link>
         </div>
@@ -338,9 +340,9 @@ export default function Home() {
               <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 z-[2]">
                 <div className="text-white/80 text-[13px] md:text-[15px] font-medium tracking-[.01em]">{v.title}</div>
                 <div className="flex items-center gap-2.5 mt-2">
-                  <span className="text-white/30 text-[9px] sans uppercase tracking-[.15em]">{v.creator}</span>
+                  <span className="text-white/40 text-[9px] sans uppercase tracking-[.15em]">{v.creator}</span>
                   <span className="w-[2px] h-[2px] rounded-full bg-white/15" />
-                  <span className="text-white/[.15] text-[9px] sans">{v.views}</span>
+                  <span className="text-white/[.25] text-[9px] sans">{v.views}</span>
                 </div>
               </div>
             </div>
@@ -390,7 +392,7 @@ export default function Home() {
                   셀러는 상품만<br />등록하세요.
                 </h2>
               </div>
-              <div className="text-white/[.35] text-[13px] font-light leading-[2] md:pt-12" data-aos="blur-in" data-aos-delay="200" data-aos-duration="1200">
+              <div className="text-white/[.45] text-[13px] font-light leading-[2] md:pt-12" data-aos="blur-in" data-aos-delay="200" data-aos-duration="1200">
                 팔로워 10만+ AI 인플루언서가 22단계 파이프라인으로 영상을 제작하고,
                 자체 채널에 게시하고, 판매를 추적하고, 수수료를 정산합니다.
                 기존 월 800만원의 비용을 3만원으로.
@@ -441,9 +443,9 @@ export default function Home() {
           <div className="flex items-end justify-between mb-8">
             <div>
               <span className="sans text-[9px] text-white/[.12] uppercase tracking-[.2em]" data-aos="fade-right" data-aos-duration="800">AI Influencers</span>
-              <h2 className="text-white/60 text-[15px] font-medium mt-1 tracking-[.01em]" data-aos="blur-in" data-aos-delay="100" data-aos-duration="1000">팔로워 40만+ AI 인플루언서</h2>
+              <h2 className="text-white/80 text-[15px] font-medium mt-1 tracking-[.01em]" data-aos="blur-in" data-aos-delay="100" data-aos-duration="1000">AI 인플루언서를 만나보세요</h2>
             </div>
-            <Link href="/influencers" className="sans text-[9px] text-white/[.15] uppercase tracking-[.15em] hover:text-white/30 transition-colors" data-aos="fade-left" data-aos-delay="200">
+            <Link href="/influencers" className="sans text-[9px] text-white/[.3] uppercase tracking-[.15em] hover:text-white/30 transition-colors" data-aos="fade-left" data-aos-delay="200">
               View All →
             </Link>
           </div>
@@ -460,10 +462,10 @@ export default function Home() {
                   <img src={YT(inf.vid)} onError={(e)=>{e.target.src=YT_FALLBACK(inf.vid)}} alt="" className="w-full h-full object-cover" style={{ objectPosition: '50% 20%' }} />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
-                    <div className="sans text-[8px] text-white/25 uppercase tracking-[.2em] mb-1.5">{inf.cat}</div>
+                    <div className="sans text-[8px] text-white/35 uppercase tracking-[.2em] mb-1.5">{inf.cat}</div>
                     <div className="flex items-end justify-between">
                       <span className="text-white/80 text-[14px] font-medium sans tracking-[.03em]">{inf.name}</span>
-                      <span className="text-white/20 text-[10px] sans">{inf.f}</span>
+                      <span className="text-white/35 text-[10px] sans">{inf.f}</span>
                     </div>
                   </div>
                 </div>
@@ -479,11 +481,11 @@ export default function Home() {
       <section className="py-28">
         <div className="sep mb-28" />
         <div className="page-container text-center">
-          <span className="sans text-[9px] text-white/[.2] uppercase tracking-[.2em]" data-aos="fade-down" data-aos-duration="800">Get Started</span>
+          <span className="sans text-[9px] text-white/[.35] uppercase tracking-[.2em]" data-aos="fade-down" data-aos-duration="800">Get Started</span>
           <h2 className="serif text-[26px] md:text-[38px] font-light text-white mt-5 leading-[1.15]" style={{ letterSpacing: '-0.025em' }} data-aos="blur-in" data-aos-delay="100" data-aos-duration="1200">
             지금 시작하세요
           </h2>
-          <p className="text-white/[.3] text-[13px] font-light mt-4 mb-10" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">사전등록 시 Pro 50% 영구 할인 + 1개월 무료 체험</p>
+          <p className="text-white/[.4] text-[13px] font-light mt-4 mb-10" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">사전등록 시 Pro 50% 영구 할인 + 1개월 무료 체험</p>
           <div className="flex items-center justify-center gap-3" data-aos="scale-fade" data-aos-delay="300" data-aos-duration="900">
             <Link href="/create" className="btn-w sans glow">시작하기</Link>
             <Link href="/pricing" className="btn-o sans">요금제 보기</Link>
